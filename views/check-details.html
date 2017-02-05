@@ -1,0 +1,35 @@
+<@ extends "base.html" @>
+
+<@ block header @>
+    <h3>Uptime - Configurations Details</h3>
+<@ endblock @>
+
+<@ block content @>
+
+    <form action='/uptime-checks/{{ config._id }}' method='POST' enctype='application/json'>
+        <div class='w3-row w3-padding-hor-4'>
+            <div class='w3-col l2'>Name:</div><div class='w3-col l4'><input name='name' value='{{ config.name }}'></div>
+        </div>
+        <div class='w3-row w3-padding-hor-4'>
+            <div class='w3-col l2'>Belongs to Group:</div><div class='w3-col l4'><input name='group_name' value='{{ config.group_name }}'></div>
+        </div>
+        <div class='w3-row w3-padding-hor-4'>
+            <div class='w3-col l2'>URL:</div><div class='w3-col l4'><input name='url' value='{{ config.url }}'></div>
+        </div>
+        <div class='w3-row w3-padding-hor-4'>
+            <div class='w3-col l2'>URL Data:</div><div class='w3-col l4'><input name='data' value='{{ config.data }}'></div>
+        </div>
+        <div class='w3-row w3-padding-hor-4'>
+            <div class='w3-col l2'>Interval:</div><div class='w3-col l4'><input name='interval' value='{{ config.interval }}'></div>
+        </div>
+        <div class='w3-row w3-padding-hor-4'>
+            <div class='w3-col l2'>Checks so far:</div><div class='w3-col l4'><span>{{ config.checks.length }}</span></div>
+        </div>
+
+        <div class='w3-row w3-padding-hor-16'>
+            <input type='submit' class='w3-btn w3-border w3-pale-green w3-small uc-width-small' value='Save'>
+            <a href='/uptime-checks'><button class='w3-btn w3-border w3-border-red w3-pale-red w3-small uc-width-small' type='button'>Cancel</button></a>
+        </div>
+    </form>
+
+<@ endblock @>

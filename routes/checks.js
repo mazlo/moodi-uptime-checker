@@ -31,4 +31,48 @@ route.get( '/', function(req, res)
     })
 });
 
+/* GET /uptime-checks/:id */
+/* Show details for CheckConfig with given :id */
+route.get( '/:cid', function( req, res )
+{
+    CheckConfig
+        .findById( req.params['cid'] )
+        .populate( 'checkconfigs.checks' )
+        .exec( function( err, config )
+        {
+            res.format({
+                html: function()
+                {
+                    res.render( 'check-details.html', 
+                    {
+                        config: config
+                    })
+                },
+                json: function()
+                {
+                    res.json( config );
+                }
+            })
+        })
+})
+
+/* POST /uptime-checks/:id */
+/* Update one CheckConfig with given :id */
+route.post( '/:cid', function( req, res )
+{
+    CheckConfig
+        .findOneAndUpdate( 
+            { "_id" : req.params['cid'] },
+            { "$set" : req.body },
+            function( err, config ) 
+            {
+                if ( err ) console.log( err )
+                if ( config == undefined ) res.json( { status: 500 } )
+
+                config.save()
+
+                res.redirect( '/uptime-checks' )
+            })
+})
+
 module.exports = route;
