@@ -1,0 +1,49 @@
+<html>
+    <head>
+        <title>{{ title }}</title>
+
+        <script src='/javascripts/pace.min.js'></script>
+        <script type='text/javascript' src='/javascripts/uc.js'></script>
+        <script type='text/javascript' src='/javascripts/jquery-1.8.2.js'></script>
+
+        <script src="/socket.io/socket.io.js"></script>
+        
+        <script type='text/javascript'>
+            
+            var socket = io();
+            
+            <!-- this is to prevent conflicts with prototype and jquerytools -->
+            $jQ = jQuery.noConflict();
+
+        </script>
+
+        <link rel='stylesheet' type='text/css' href='/stylesheets/ionicons.css' />
+        <link rel='stylesheet' type='text/css' href='/stylesheets/w3.css' />
+        <link rel='stylesheet' type='text/css' href='/stylesheets/pacejs.css' />
+        <link rel='stylesheet' type='text/css' href='/stylesheets/uc.css' />
+    </head>
+
+    <body>
+        <div class='w3-row wrapper'>
+            
+            <div id='header' class='w3-container'>
+                <@ block header @>
+                <@ endblock @>
+            </div>
+
+            <div id='content' class='w3-container'>
+                <div class='w3-col l9'>
+                    <@ block content @>
+                    <@ endblock @>
+                </div>
+
+                <div class='w3-col l3'>
+                    <@ block service_column @>
+                    <@ endblock @>
+                </div>
+            </div>
+
+        </div>
+    </body>
+
+</html>
