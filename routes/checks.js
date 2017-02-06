@@ -1,5 +1,5 @@
-var express = require('express');
-var route = express.Router();
+var express = require('express'),
+    route = express.Router();
 
 var mongoose = require('mongoose'),
     CheckConfig = mongoose.model( 'CheckConfig' ),
@@ -30,6 +30,60 @@ route.get( '/', function(req, res)
         })
     })
 });
+
+/* POST /uptime-checks */
+/* Create a new CheckConfig */
+route.post( '/', function( req, res )
+{
+    var config = new CheckConfig( req.body )
+
+    // save next execution in config to show in ui
+    config.next_check = Date.now() + req.body.interval
+
+    config.save( function( err )
+    {
+        if ( err ) console.log( err )
+
+        handleRecurrentCheckConfiguration( req, config )
+
+        res.redirect( '/uptime-checks' )
+    })
+})
+
+/* */
+function handleRecurrentCheckConfiguration( req, config )
+{
+    var intervalsMap = req.intervalsMap
+
+    // remove recurrent task first
+    if ( intervalsMap[config._id] )
+    {
+        var interval = intervalsMap[config._id]
+
+        clearInterval( interval )
+        intervalsMap[config._id] = undefined
+
+        console.log( 'CLEARED interval: '+ interval )
+    }
+
+    // nothing to do
+    if ( !config.active )
+        return
+
+    // add recurrent task 
+    var interval = setInterval( function()
+    {
+        //      trigger HEAD request to config.url with config.data
+        //      save result as config.checks[{}] object
+        console.log( 'EXEC interval:'+ this )
+        console.log( 'HEAD '+ config.url )
+
+    }, config.interval )
+
+    // save in map
+    intervalsMap[config._id] = interval
+    console.log( 'SET interval: '+ interval )
+}
 
 /* GET /uptime-checks/create */
 /* Show form to create new CheckConfig */
@@ -71,14 +125,18 @@ route.post( '/:cid', function( req, res )
         .findOneAndUpdate( 
             { "_id" : req.params['cid'] },
             { "$set" : req.body },
+            { new : true },
             function( err, config ) 
             {
                 if ( err ) console.log( err )
                 if ( config == undefined ) res.json( { status: 500 } )
 
-                config.save()
-
-                res.redirect( '/uptime-checks' )
+                config.save( function( err )
+                {
+                    handleRecurrentCheckConfiguration( req, config )
+                    
+                    res.redirect( '/uptime-checks' )
+                })
             })
 })
 

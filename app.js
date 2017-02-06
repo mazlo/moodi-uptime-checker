@@ -9,6 +9,8 @@ var bodyParser = require('body-parser');
 var nunjucks = require( 'nunjucks' );
 var dateFilter = require( 'nunjucks-date-filter' );
 
+var intervalsMap = {};
+
 // db and entitytypes
 var db = require( './model/db' );
 var order = require( './model/check' );
@@ -62,6 +64,15 @@ app.use( function( req, res, next )
     req.io = io;
     next();
 });
+
+// make hashmap accessible to routes
+app.use( function( req, res, next ) 
+{
+    req.intervalsMap = intervalsMap;
+    next();
+})
+// make hashmap accessible in templates
+app.set( 'intervalsMap', intervalsMap )
 
 // Routes setup
 app.use( '/', index );
