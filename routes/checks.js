@@ -22,7 +22,11 @@ route.get( '/', function(req, res)
             {
                 res.render( 'uptime-checks.html', 
                 {
-                    configs: configs
+                    configs: configs,
+                    next_check: function( future_value )
+                    {
+                        return ( parseInt( future_value ) - Date.now() ) / 1000
+                    }
                 })
             },
             json: function()
