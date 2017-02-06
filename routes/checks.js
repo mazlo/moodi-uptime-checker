@@ -1,8 +1,10 @@
 var express = require('express'),
-    route = express.Router();
+    route = express.Router(),
+    request = require( 'request' );
 
 var mongoose = require('mongoose'),
     CheckConfig = mongoose.model( 'CheckConfig' ),
+    Check = mongoose.model( 'Check' ),
     ObjectId = mongoose.Types.ObjectId
 
 /* GET /uptime-checks/ */
@@ -38,7 +40,7 @@ route.post( '/', function( req, res )
     var config = new CheckConfig( req.body )
 
     // save next execution in config to show in ui
-    config.next_check = Date.now() + req.body.interval
+    config.next_check = Date.now() + parseInt( config.interval )
 
     config.save( function( err )
     {
@@ -73,10 +75,37 @@ function handleRecurrentCheckConfiguration( req, config )
     // add recurrent task 
     var interval = setInterval( function()
     {
-        //      trigger HEAD request to config.url with config.data
-        //      save result as config.checks[{}] object
-        console.log( 'EXEC interval:'+ this )
+        console.log( 'EXEC interval: '+ this )
         console.log( 'HEAD '+ config.url )
+
+        var when = Date.now()
+
+        // trigger HEAD request to config.url with config.data
+        request.head({
+            url: config.url,
+            headers: { 'User-Agent': 'uptime-checker' }
+        }, function( err, response, body )
+        {
+            // save response as Check
+            var check = new Check()
+
+            check.statusCode = response.statusCode
+
+            check.when = when
+            check.duration = Date.now() - when
+            check.response = body
+
+            config.next_check = Date.now() + parseInt( config.interval )
+            config.markModified( 'checks' )
+            config.checks.push( check )
+
+            config.save( function( err )
+            {
+                if ( err ) console.log( err )
+
+                console.log( 'SAVE check in: '+ config._id )
+            })
+        })
 
     }, config.interval )
 
