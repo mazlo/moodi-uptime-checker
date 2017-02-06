@@ -27,7 +27,7 @@
             <div class='w3-col l2'>URL Data:</div><div class='w3-col l4'><input name='data' value='{{ config.data }}'></div>
         </div>
         <div class='w3-row w3-padding-hor-4'>
-            <div class='w3-col l2'>Interval:</div><div class='w3-col l4'><input name='interval' value='{{ config.interval }}'></div>
+            <div class='w3-col l2'>Interval (in ms):</div><div class='w3-col l4'><input name='interval' value='{{ config.interval }}' placeholder='default: 60000'></div>
         </div>
         <div class='w3-row w3-padding-hor-4'>
             <div class='w3-col l2'>Checks so far:</div><div class='w3-col l4'><span>{{ config.checks.length }}</span></div>
