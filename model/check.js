@@ -16,7 +16,8 @@ var checkConfigSchema = new Schema({
     data: String,
     interval: { type: Number, default: 60000 },
     
-    checks: [checkSchema]
+    checks: [checkSchema],
+    next_check: { type: Date, default: undefined }
 })
 
 mongoose.model( 'Check', checkSchema );
