@@ -75,7 +75,7 @@ route.get( '/:cid', function( req, res )
             res.format({
                 html: function()
                 {
-                    res.render( 'check-details.html', 
+                    res.render( 'uptime-check-details.html', 
                     {
                         config: config
                     })
