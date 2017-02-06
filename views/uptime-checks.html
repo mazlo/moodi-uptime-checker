@@ -17,10 +17,10 @@
     <div class='w3-row w3-padding-hor-8'>
         <div class='w3-col l1'><span class='<@ if config.active @>w3-light-green<@ else @>w3-red<@ endif @>'>&nbsp;</span></div>
         <div class='w3-col l2'><h4 class='w3-margin-0'><a href='/uptime-checks/{{ config._id }}'>{{ config.name }}</a></h4></div>
-        <div class='w3-col l2'>&nbsp;</div>
-        <div class='w3-col l2'>&nbsp;</div>
+        <div class='w3-col l2'><@ if config.last_response @>{{ config.last_response }}<@ else @>-<@ endif @></div>
+        <div class='w3-col l2'><@ if config.last_duration @>{{ config.last_duration }}ms<@ else @>-<@ endif @></div>
         <@ set next_check_in = next_check( config.next_check ) @>
-        <div class='w3-col l2'><@if config.active and next_check_in > 0 @>in {{ next_check_in }}s<@ else @>not scheduled<@ endif @></div>
+        <div class='w3-col l2'><@if config.active and next_check_in > 0 @>in {{ next_check_in | round(0, "ceiling") }}s<@ else @>not scheduled<@ endif @></div>
     </div>
     <@ endfor @>
 
