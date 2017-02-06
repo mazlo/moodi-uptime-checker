@@ -18,7 +18,9 @@ var checkConfigSchema = new Schema({
     interval: { type: Number, default: 60000 },
     
     checks: [checkSchema],
-    next_check: Number
+    next_check: Number,
+    last_response: Number,
+    last_duration: Number
 })
 
 mongoose.model( 'Check', checkSchema );

@@ -6,7 +6,7 @@ var mongoose = require('mongoose'),
 /* */
 exports.intervalsMap = {};
 
-/* */
+/* Is executed on creation of update of CheckConfig */
 exports.handleRecurrentCheckConfiguration = function( req, config )
 {
     var intervalsMap = req.intervalsMap
@@ -37,6 +37,10 @@ exports.handleRecurrentCheckConfiguration = function( req, config )
 /* */
 exports.addRecurrentTask = function( config )
 {
+    // save planned
+    config.next_check = Date.now() + parseInt( config.interval )
+    config.save()
+    
     var interval = setInterval( function()
     {
         console.log( 'EXEC interval: '+ this )
@@ -50,18 +54,16 @@ exports.addRecurrentTask = function( config )
             headers: { 'User-Agent': 'uptime-checker' }
         }, function( err, response, body )
         {
-            var now = Date.now()
-
             // save response as Check
             var check = new Check()
 
             check.statusCode = response.statusCode
 
             check.when = when
-            check.duration = now - when
+            check.duration = Date.now() - when
             check.response = body
 
-            config.next_check = now + parseInt( config.interval )
+            config.next_check = Date.now() + parseInt( config.interval )
             config.last_response = check.statusCode
             config.last_duration = check.duration
 
