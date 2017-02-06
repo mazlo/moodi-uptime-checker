@@ -31,6 +31,13 @@ route.get( '/', function(req, res)
     })
 });
 
+/* GET /uptime-checks/create */
+/* Show form to create new CheckConfig */
+route.get( '/create', function( req, res )
+{
+    res.render( 'uptime-check-create.html' )
+})
+
 /* GET /uptime-checks/:id */
 /* Show details for CheckConfig with given :id */
 route.get( '/:cid', function( req, res )
