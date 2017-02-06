@@ -6,14 +6,14 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+var mongoose = require( 'mongoose' );
 var nunjucks = require( 'nunjucks' );
 var dateFilter = require( 'nunjucks-date-filter' );
-
-var intervalsMap = {};
 
 // db and entitytypes
 var db = require( './model/db' );
 var order = require( './model/check' );
+var intervalsHelper = require( './helpers/intervalsHelper' );
 
 // routes
 var index = require('./routes/index');
@@ -68,11 +68,28 @@ app.use( function( req, res, next )
 // make hashmap accessible to routes
 app.use( function( req, res, next ) 
 {
-    req.intervalsMap = intervalsMap;
+    req.intervalsMap = intervalsHelper.intervalsMap;
     next();
 })
 // make hashmap accessible in templates
-app.set( 'intervalsMap', intervalsMap )
+app.set( 'intervalsMap', intervalsHelper.intervalsMap )
+
+// init active CheckConfigs in database
+mongoose.connection.once( 'open', function()
+{
+    var CheckConfig = mongoose.model( 'CheckConfig' )
+
+    CheckConfig
+        .find( { active: true }, function( err, configs )
+        {
+            if( err ) console.log( err )
+
+            configs.forEach( function( config )
+            {
+                intervalsHelper.addRecurrentTask( config )
+            })
+        })
+})
 
 // Routes setup
 app.use( '/', index );
