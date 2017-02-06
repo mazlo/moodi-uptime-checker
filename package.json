@@ -14,6 +14,7 @@
     "morgan": "^1.5.0",
     "nunjucks": "*",
     "nunjucks-date-filter": "^0.1.1",
+    "request": "^2.79.0",
     "serve-favicon": "^2.2.0",
     "socket.io": "^1.7.2"
   },

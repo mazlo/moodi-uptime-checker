@@ -2,9 +2,10 @@ var mongoose = require( 'mongoose' ),
     Schema = mongoose.Schema
 
 var checkSchema = new Schema({
-    when: { type: Date, default: undefined },
+    when: Number,
     duration: Number,
     response: String,
+    statusCode: Number
 })
 
 var checkConfigSchema = new Schema({
@@ -16,7 +17,10 @@ var checkConfigSchema = new Schema({
     data: String,
     interval: { type: Number, default: 60000 },
     
-    checks: [checkSchema]
+    checks: [checkSchema],
+    next_check: Number,
+    last_response: Number,
+    last_duration: Number
 })
 
 mongoose.model( 'Check', checkSchema );

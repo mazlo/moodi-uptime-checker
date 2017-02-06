@@ -1,8 +1,10 @@
-var express = require('express');
-var route = express.Router();
+var express = require('express'),
+    route = express.Router(),
+    intervalsHelper = require( '../helpers/intervalsHelper' );
 
 var mongoose = require('mongoose'),
     CheckConfig = mongoose.model( 'CheckConfig' ),
+    Check = mongoose.model( 'Check' ),
     ObjectId = mongoose.Types.ObjectId
 
 /* GET /uptime-checks/ */
@@ -20,7 +22,11 @@ route.get( '/', function(req, res)
             {
                 res.render( 'uptime-checks.html', 
                 {
-                    configs: configs
+                    configs: configs,
+                    next_check: function( future_value )
+                    {
+                        return ( parseInt( future_value ) - Date.now() ) / 1000
+                    }
                 })
             },
             json: function()
@@ -30,6 +36,32 @@ route.get( '/', function(req, res)
         })
     })
 });
+
+/* POST /uptime-checks */
+/* Create a new CheckConfig */
+route.post( '/', function( req, res )
+{
+    var config = new CheckConfig( req.body )
+
+    // save next execution in config to show in ui
+    config.next_check = Date.now() + parseInt( config.interval )
+
+    config.save( function( err )
+    {
+        if ( err ) console.log( err )
+
+        intervalsHelper.handleRecurrentCheckConfiguration( req, config )
+
+        res.redirect( '/uptime-checks' )
+    })
+})
+
+/* GET /uptime-checks/create */
+/* Show form to create new CheckConfig */
+route.get( '/create', function( req, res )
+{
+    res.render( 'uptime-check-create.html' )
+})
 
 /* GET /uptime-checks/:id */
 /* Show details for CheckConfig with given :id */
@@ -43,7 +75,7 @@ route.get( '/:cid', function( req, res )
             res.format({
                 html: function()
                 {
-                    res.render( 'check-details.html', 
+                    res.render( 'uptime-check-details.html', 
                     {
                         config: config
                     })
@@ -64,14 +96,18 @@ route.post( '/:cid', function( req, res )
         .findOneAndUpdate( 
             { "_id" : req.params['cid'] },
             { "$set" : req.body },
+            { new : true },
             function( err, config ) 
             {
                 if ( err ) console.log( err )
                 if ( config == undefined ) res.json( { status: 500 } )
 
-                config.save()
-
-                res.redirect( '/uptime-checks' )
+                config.save( function( err )
+                {
+                    intervalsHelper.handleRecurrentCheckConfiguration( req, config )
+                    
+                    res.redirect( '/uptime-checks' )
+                })
             })
 })
 
