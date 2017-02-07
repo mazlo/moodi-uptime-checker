@@ -1,5 +1,8 @@
 
 body {
+    margin: auto;
+    width: 1024px;
+    
     font-family: sans-serif;
     font-size: 15px;
 }
