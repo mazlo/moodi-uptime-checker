@@ -9,7 +9,12 @@
         <script src="/socket.io/socket.io.js"></script>
         
         <script type='text/javascript'>
-            
+
+            var status_ions = { 
+                200: '<span class="uc-ion ion-ios-checkmark-outline w3-text-green"></span>',
+                404: '<span class="uc-ion ion-ios-lightbulb-outline w3-text-yellow"></span>',
+                500: '<span class="uc-ion ion-ios-lightbulb-outline w3-text-red"></span>' }
+
             var socket = io();
             
             socket.on( 'check response', function( config )
@@ -22,6 +27,25 @@
             
             <!-- this is to prevent conflicts with prototype and jquerytools -->
             $jQ = jQuery.noConflict();
+
+            $jQ( function()
+            {
+                $jQ( 'div.uc-config' ).each( function()
+                {
+                    var last_response_elem = $jQ(this).find( 'div.js-config-last-response' )
+                    var last_duration_elem = $jQ(this).find( 'div.js-config-last-duration' )
+
+                    if ( status_ions[parseInt(last_response_elem.text())] )
+                        last_response_elem.html( status_ions[parseInt(last_response_elem.text())] + last_response_elem.text() );
+                    else 
+                        last_response_elem.text( '-' );
+
+                    if ( last_duration_elem.text() )
+                        last_duration_elem.text( last_duration_elem.text() +'ms' );
+                    else
+                        last_duration_elem.text( '-' );
+                })
+            })
 
         </script>
 
