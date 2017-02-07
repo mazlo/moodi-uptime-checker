@@ -12,7 +12,7 @@ var mongoose = require('mongoose'),
 route.get( '/', function(req, res) 
 {   
     //retrieve all from Monogo
-    CheckConfig.find( {}, function ( err, configs ) 
+    CheckConfig.find( {}, null, { sort: 'group_name' }, function ( err, configs ) 
     {
         if (err) return console.error(err);
 
