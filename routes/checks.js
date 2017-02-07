@@ -36,6 +36,9 @@ route.post( '/', function( req, res )
 {
     var config = new CheckConfig( req.body )
 
+    if ( config.interval == undefined || config.interval == '' || config.interval == 0 )
+        config.interval = 60
+
     config.save( function( err )
     {
         if ( err ) console.log( err )
@@ -91,6 +94,9 @@ route.post( '/:cid', function( req, res )
             {
                 if ( err ) console.log( err )
                 if ( config == undefined ) res.json( { status: 500 } )
+
+                if ( config.interval == undefined || config.interval == '' || config.interval == 0 )
+                    config.interval = 60
 
                 config.save( function( err )
                 {
