@@ -6,18 +6,18 @@
 
 <@ block content @>
 
-    <div class='w3-row w3-padding-hor-16'>
-        <div class='w3-col l1'>Status</div>
-        <div class='w3-col l2'>Name</div>
-        <div class='w3-col l2'>Last Response</div>
-        <div class='w3-col l2'>Duration</div>
-        <div class='w3-col l2'>Next Check</div>
+    <div class='w3-row w3-padding-hor-8'>
+        <div class='w3-col l1 w3-padding-hor-4 w3-border-bottom'>Status</div>
+        <div class='w3-col l2 w3-padding-hor-4 w3-border-bottom'>Name</div>
+        <div class='w3-col l2 w3-padding-hor-4 w3-border-bottom'>Last Response</div>
+        <div class='w3-col l2 w3-padding-hor-4 w3-border-bottom'>Duration</div>
+        <div class='w3-col l2 w3-padding-hor-4 w3-border-bottom'>Next Check</div>
     </div>
     <@ for config in configs @>
     <div class='w3-row w3-padding-hor-8'>
-        <div class='w3-col l1'><span class='<@ if config.active @>w3-light-green<@ else @>w3-red<@ endif @>'>&nbsp;</span></div>
+        <div class='w3-col l1'><span class='ion <@ if config.active @>ion-ios-stopwatch-outline w3-text-green<@ else @>ion-android-hand w3-text-red<@ endif @>'>&nbsp;</span></div>
         <div class='w3-col l2'><h4 class='w3-margin-0'><a href='/uptime-checks/{{ config._id }}'>{{ config.name }}</a></h4></div>
-        <div class='w3-col l2'><@ if config.last_response @>{{ config.last_response }}<@ else @>-<@ endif @></div>
+        <div class='w3-col l2'><@ if config.last_response == 200 @><span class='uc-ion ion-ios-checkmark-outline w3-text-green'></span>{{ config.last_response }}<@ elseif config.last_response == undefined @>-<@ else @>{{ config.last_response }}<@ endif @></div>
         <div class='w3-col l2'><@ if config.last_duration @>{{ config.last_duration }}ms<@ else @>-<@ endif @></div>
         <@ set next_check_in = next_check( config.next_check ) @>
         <div class='w3-col l2'><@if config.active and next_check_in > 0 @>in {{ next_check_in | round(0, "ceiling") }}s<@ else @>not scheduled<@ endif @></div>
