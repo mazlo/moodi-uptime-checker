@@ -1,7 +1,8 @@
 var mongoose = require('mongoose'),
     CheckConfig = mongoose.model( 'CheckConfig' ),
     Check = mongoose.model( 'Check' ),
-    request = require( 'request' )
+    request = require( 'request' ),
+    io = require( 'socket.io' )
 
 /* */
 exports.intervalsMap = {};
@@ -27,7 +28,7 @@ exports.handleRecurrentCheckConfiguration = function( req, config )
         return
 
     // add recurrent task 
-    var intervalId = exports.addRecurrentTask( config )
+    var intervalId = exports.addRecurrentTask( req, config )
 
     // save in map
     intervalsMap[config._id] = intervalId
@@ -35,7 +36,7 @@ exports.handleRecurrentCheckConfiguration = function( req, config )
 }
 
 /* */
-exports.addRecurrentTask = function( config )
+exports.addRecurrentTask = function( req, config )
 {
     // save planned
     config.next_check = Date.now() + parseInt( config.interval )
@@ -75,6 +76,7 @@ exports.addRecurrentTask = function( config )
                 if ( err ) console.log( err )
 
                 console.log( 'SAVE check in: '+ config._id )
+                req.io.sockets.emit( 'check response', config );
             })
         })
 

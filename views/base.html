@@ -12,6 +12,14 @@
             
             var socket = io();
             
+            socket.on( 'check response', function( config )
+            {
+                var config_elem = $jQ( '#'+ config._id );
+                
+                config_elem.find( 'div.js-config-last-response' ).html( status_ions[config.last_response] + config.last_response );
+                config_elem.find( 'div.js-config-last-duration' ).text( config.last_duration +'ms' );
+            });
+            
             <!-- this is to prevent conflicts with prototype and jquerytools -->
             $jQ = jQuery.noConflict();
 
