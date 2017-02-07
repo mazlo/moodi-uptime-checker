@@ -80,7 +80,7 @@ exports.addRecurrentTask = function( req, config )
             })
         })
 
-    }, config.interval )
+    }, ( config.interval * 1000 ) )
 
     return interval
 }
