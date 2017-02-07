@@ -8,10 +8,10 @@
 
     <form action='/uptime-checks/{{ config._id }}' method='POST' enctype='application/json'>
         <div class='w3-row w3-padding-hor-4'>
-            <div class='w3-col l2'>Active:</div>
+            <div class='w3-col l2'>Status:</div>
             <div class='w3-col l4'>
-                <span style='display: inline-block; width: 48px'>Yes:</span> <input type='radio' name='active' value='true' style='width: auto' <@ if config.active @>checked='checked'<@ endif @>> <br>
-                <span style='display: inline-block; width: 48px'>No:</span> <input type='radio' name='active' value='false' style='width: auto' <@ if config.active == false @>checked='checked'<@ endif @>>
+                <span class='uc-ion-narrow ion-ios-stopwatch-outline w3-text-green'></span> <input type='radio' name='active' value='true' style='margin-right: 18px; width: auto' <@ if config.active @>checked='checked'<@ endif @>>
+                <span class='uc-ion-narrow ion-android-hand w3-text-red'></span> <input type='radio' name='active' value='false' style='width: auto' <@ if config.active == false @>checked='checked'<@ endif @>>
             </div>
         </div>
         <div class='w3-row w3-padding-hor-4'>
