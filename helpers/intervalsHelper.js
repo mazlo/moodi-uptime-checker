@@ -40,14 +40,15 @@ exports.addRecurrentTask = function( req, config )
 {
     var interval = setInterval( function()
     {
+        var url = config.url + (config.data ? '?'+ config.data : '')
         console.log( 'EXEC interval: '+ this )
-        console.log( 'HEAD '+ config.url )
+        console.log( 'HEAD '+ url )
 
         var when = Date.now()
 
         // trigger HEAD request to config.url with config.data
         request.head({
-            url: config.url,
+            url: url,
             headers: { 'User-Agent': 'uptime-checker' }
         }, function( err, response, body )
         {
