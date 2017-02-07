@@ -70,9 +70,18 @@ td {
 /*  */
 
 .uc-ion {
+    display: inline-block;
     margin: 0 4px;
+    width: 16px;
     cursor: pointer;
 }
+.uc-ion-narrow {
+    display: inline-block;
+    margin: 0 4px;
+    width: 8px;
+    cursor: pointer;
+}
+
 .uc-width-really-short {
     width: 28px;
 }

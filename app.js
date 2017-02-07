@@ -79,16 +79,10 @@ mongoose.connection.once( 'open', function()
 {
     var CheckConfig = mongoose.model( 'CheckConfig' )
 
-    CheckConfig
-        .find( { active: true }, function( err, configs )
-        {
-            if( err ) console.log( err )
-
-            configs.forEach( function( config )
-            {
-                intervalsHelper.addRecurrentTask( config )
-            })
-        })
+    CheckConfig.update( { active: true }, { '$set': { active: false } }, function( err )
+    {
+        if( err ) console.log( err )
+    })
 })
 
 // Routes setup
