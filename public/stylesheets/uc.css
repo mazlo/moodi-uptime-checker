@@ -70,7 +70,9 @@ td {
 /*  */
 
 .uc-ion {
+    display: inline-block;
     margin: 0 4px;
+    width: 16px;
     cursor: pointer;
 }
 .uc-width-really-short {
