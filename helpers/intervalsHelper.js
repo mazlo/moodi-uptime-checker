@@ -38,10 +38,6 @@ exports.handleRecurrentCheckConfiguration = function( req, config )
 /* */
 exports.addRecurrentTask = function( req, config )
 {
-    // save planned
-    config.next_check = Date.now() + parseInt( config.interval )
-    config.save()
-    
     var interval = setInterval( function()
     {
         console.log( 'EXEC interval: '+ this )
@@ -64,7 +60,6 @@ exports.addRecurrentTask = function( req, config )
             check.duration = Date.now() - when
             check.response = body
 
-            config.next_check = Date.now() + parseInt( config.interval )
             config.last_response = check.statusCode
             config.last_duration = check.duration
 

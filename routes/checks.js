@@ -20,14 +20,7 @@ route.get( '/', function(req, res)
         res.format({
             html: function()
             {
-                res.render( 'uptime-checks.html', 
-                {
-                    configs: configs,
-                    next_check: function( future_value )
-                    {
-                        return ( parseInt( future_value ) - Date.now() ) / 1000
-                    }
-                })
+                res.render( 'uptime-checks.html', { configs: configs })
             },
             json: function()
             {
@@ -42,9 +35,6 @@ route.get( '/', function(req, res)
 route.post( '/', function( req, res )
 {
     var config = new CheckConfig( req.body )
-
-    // save next execution in config to show in ui
-    config.next_check = Date.now() + parseInt( config.interval )
 
     config.save( function( err )
     {

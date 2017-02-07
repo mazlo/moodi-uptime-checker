@@ -15,10 +15,9 @@ var checkConfigSchema = new Schema({
     
     url: String,
     data: String,
-    interval: { type: Number, default: 60000 },
+    interval: { type: Number, default: 60 },
     
     checks: [checkSchema],
-    next_check: Number,
     last_response: Number,
     last_duration: Number
 })
