@@ -82,7 +82,7 @@ route.get( '/:cid', function( req, res )
 })
 
 /* POST /uptime-checks/:id */
-/* Update one CheckConfig with given :id */
+/* Update one CheckConfig with given :id VIA FORM */
 route.post( '/:cid', function( req, res )
 {
     CheckConfig
@@ -105,6 +105,37 @@ route.post( '/:cid', function( req, res )
                     res.redirect( '/uptime-checks' )
                 })
             })
+})
+
+/* PUT /uptime-checks/:id */
+/* Update one CheckConfig with given :id VIA AJAX */
+route.put( '/:cid', function( req, res )
+{
+    CheckConfig
+        .findOneAndUpdate( 
+            { "_id" : req.params['cid'] },
+            { "$set" : { 'active': req.body.active } },
+            { new: true },
+            function( err, config )
+            {
+                if ( err ) console.log( err )
+                if ( config == undefined ) 
+                    res.status(500).json( { 
+                        message: 'config not found for given id '+ req.params['cid'], 
+                        status: 500 
+                    } )
+
+                config.save( function( err )
+                {
+                    intervalsHelper.handleRecurrentCheckConfiguration( req, config )
+                    
+                    res.json( { 
+                        message: 'success',
+                        when: 'every '+ config.interval +'s'
+                    } )
+                })
+            }
+        )
 })
 
 module.exports = route;
