@@ -6,16 +6,16 @@
 
 <@ block content @>
 
-    <div class='w3-row w3-padding-hor-8'>
-        <div class='w3-col l1 w3-padding-hor-4 w3-border-bottom'>Status</div>
-        <div class='w3-col l5 w3-padding-hor-4 w3-border-bottom'>Name</div>
-        <div class='w3-col l2 w3-padding-hor-4 w3-border-bottom'>When</div>
-        <div class='w3-col l2 w3-padding-hor-4 w3-border-bottom'>Last Response</div>
-        <div class='w3-col l2 w3-padding-hor-4 w3-border-bottom'>Last Duration</div>
+    <div class='w3-row w3-padding-hor-4 uc-border-bottom'>
+        <div class='w3-col l1 w3-padding-hor-4'>Status</div>
+        <div class='w3-col l5 w3-padding-hor-4'>Name</div>
+        <div class='w3-col l2 w3-padding-hor-4'>When</div>
+        <div class='w3-col l2 w3-padding-hor-4'>Last Response</div>
+        <div class='w3-col l2 w3-padding-hor-4'>Last Duration</div>
     </div>
     <@ for config in configs @>
-    <div class='uc-config w3-row w3-padding-hor-8' id='{{ config._id }}'>
-        <div class='w3-col l1'><a href='/uptime-checks/{{ config._id }}' class='js-config-status'><span class='ion <@ if config.active @>ion-ios-stopwatch-outline w3-text-green js-config-enabled<@ else @>ion-android-hand w3-text-red js-config-disabled<@ endif @>'>&nbsp;</span></a></div>
+    <div class='uc-config w3-row uc-padding-hor-10 uc-border-top' id='{{ config._id }}'>
+        <div class='w3-col l1'><a href='/uptime-checks/{{ config._id }}' class='js-config-status'><span class='uc-ion <@ if config.active @>ion-ios-stopwatch-outline w3-text-green js-config-enabled<@ else @>ion-android-hand w3-text-red js-config-disabled<@ endif @>'></span></a></div>
         <div class='w3-col l5'><h4 class='w3-margin-0'><a href='/uptime-checks/{{ config._id }}'>{{ config.name }}</a></h4></div>
         <div class='w3-col l2 js-config-when'><@if config.active @>every {{ config.interval }}s<@ else @>not scheduled<@ endif @></div>
         <div class='w3-col l2 js-config-last-response'>{{ config.last_response }}</div>
