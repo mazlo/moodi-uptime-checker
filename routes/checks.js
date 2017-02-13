@@ -81,6 +81,23 @@ route.get( '/:cid', function( req, res )
         })
 })
 
+/* GET /uptime-checks/:id/once */
+/* Show details for CheckConfig with given :id */
+route.get( '/:cid/once', function( req, res )
+{
+    CheckConfig
+        .findById( req.params['cid'] )
+        .exec( function( err, config )
+        {
+            if ( err ) console.log( err )
+            if ( config == undefined ) res.json( { status: 500 } )
+
+            intervalsHelper.doTask( req, config )
+            
+            res.json( { message: 'ok' } )
+        })
+})
+
 /* POST /uptime-checks/:id */
 /* Update one CheckConfig with given :id VIA FORM */
 route.post( '/:cid', function( req, res )
