@@ -2,7 +2,8 @@ var mongoose = require('mongoose'),
     CheckConfig = mongoose.model( 'CheckConfig' ),
     Check = mongoose.model( 'Check' ),
     request = require( 'request' ),
-    io = require( 'socket.io' )
+    io = require( 'socket.io' ),
+    cheerio = require( 'cheerio' )
 
 /* */
 exports.intervalsMap = {};
@@ -42,12 +43,12 @@ exports.addRecurrentTask = function( req, config )
     {
         var url = config.url + (config.data ? '?'+ config.data : '')
         console.log( 'EXEC interval: '+ this )
-        console.log( 'HEAD '+ url )
+        console.log( 'GET '+ url )
 
         var when = Date.now()
 
-        // trigger HEAD request to config.url with config.data
-        request.head({
+        // trigger GET request to config.url with config.data
+        request.get({
             url: url,
             headers: { 'User-Agent': 'uptime-checker' }
         }, function( err, response, body )
@@ -74,6 +75,24 @@ exports.addRecurrentTask = function( req, config )
                 console.log( 'SAVE check in: '+ config._id )
                 req.io.sockets.emit( 'check response', config );
             })
+
+            // evaluate assumptions if any
+
+            if ( config.last_response == 500 )
+                return
+
+            if ( !config.assumptions || config.assumptions.length == 0 )
+                return
+
+            $ = cheerio.load(body)
+
+            for( let obj of config.assumptions )
+            {
+                if ( eval(obj.value) == obj.expected_value )
+                    console.log( 'great!' )
+                else
+                    console.log( 'oh no..' )
+            }
         })
 
     }, ( config.interval * 1000 ) )
