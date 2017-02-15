@@ -16,7 +16,7 @@
     </ul>
 
     <div id='basic-config' class='tab-content active'>
-        <form action='/uptime-checks/{{ config._id }}' method='POST' enctype='application/json' autocomplete='off'>
+        <form action='/uptime-checks/{{ config._id }}' method='POST' autocomplete='off'>
             <div class='w3-row w3-padding-hor-4'>
                 <div class='w3-col l3'>Status:</div>
                 <div class='w3-col l4'>
@@ -52,23 +52,25 @@
 
     <div id='assumptions' class='tab-content hidden'>
         <form action='/uptime-checks/{{ config._id }}' method='POST' autocomplete='off'>
+        <@ for assump in config.assumptions @>
             <div class='w3-row w3-padding-hor-4'>
-                <label class='w3-col l3' for='assumptions[0][label]'>Label:</label><div class='w3-col l4'><input name='assumptions[0][label]' value='{{ config.assumptions[0].label }}'></div>
+                <label class='w3-col l3' for='assumptions[{{ loop.index0 }}][label]'>Label:</label><div class='w3-col l4'><input name='assumptions[{{ loop.index0 }}][label]' value='{{ assump.label }}'></div>
             </div>
             <div class='w3-row w3-padding-hor-4'>
-                <label class='w3-col l3' for='assumptions[0][type]'>Type:</label><div class='w3-col l4'><input name='assumptions[0][type]' value='jQuery Selector' disabled='disabled'></div>
+                <label class='w3-col l3' for='assumptions[{{ loop.index0 }}][type]'>Type:</label><div class='w3-col l4'><input name='assumptions[{{ loop.index0 }}][type]' value='jQuery Selector' disabled='disabled'></div>
             </div>
             <div class='w3-row w3-padding-hor-4'>
-                <label class='w3-col l3' for='assumptions[0][value]'>Value:</label><div class='w3-col l4'><input name='assumptions[0][value]' value='{{ config.assumptions[0].value }}'></div>
+                <label class='w3-col l3' for='assumptions[{{ loop.index0 }}][value]'>Value:</label><div class='w3-col l4'><input name='assumptions[{{ loop.index0 }}][value]' value='{{ assump.value }}'></div>
             </div>
             <div class='w3-row w3-padding-hor-4'>
-                <label class='w3-col l3' for='assumptions[0][expected_value]'>Expected Value:</label><div class='w3-col l4'><input name='assumptions[0][expected_value]' value='{{ config.assumptions[0].expected_value }}'></div>
+                <label class='w3-col l3' for='assumptions[{{ loop.index0 }}][expected_value]'>Expected Value:</label><div class='w3-col l4'><input name='assumptions[{{ loop.index0 }}][expected_value]' value='{{ assump.expected_value }}'></div>
             </div>
 
             <div class='w3-row w3-padding-hor-24'>
                 <input type='submit' class='w3-btn w3-border w3-pale-green w3-small uc-width-small' value='Save'>
                 <a href='/uptime-checks'><button class='w3-btn w3-border w3-border-red w3-pale-red w3-small uc-width-small' type='button'>Cancel</button></a>
             </div>
+        <@ endfor @>
         </form>
     </div>
 
