@@ -8,6 +8,13 @@ var checkSchema = new Schema({
     statusCode: Number
 })
 
+var assumptionSchema = new Schema({
+    label: String,
+    type: String,
+    value: String,
+    expected_value: String
+})
+
 var checkConfigSchema = new Schema({
     active: { type: Boolean, default: false },
     group_name: String,
@@ -19,8 +26,11 @@ var checkConfigSchema = new Schema({
     
     checks: [checkSchema],
     last_response: Number,
-    last_duration: Number
+    last_duration: Number,
+
+    assumptions: [assumptionSchema]
 })
 
 mongoose.model( 'Check', checkSchema );
+mongoose.model( 'Assumption', assumptionSchema );
 mongoose.model( 'CheckConfig', checkConfigSchema );

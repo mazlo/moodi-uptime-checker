@@ -6,37 +6,91 @@
 
 <@ block content @>
 
-    <form action='/uptime-checks/{{ config._id }}' method='POST' enctype='application/json'>
-        <div class='w3-row w3-padding-hor-4'>
-            <div class='w3-col l3'>Status:</div>
-            <div class='w3-col l4'>
-                <span class='uc-ion-narrow ion-ios-stopwatch-outline w3-text-green'></span> <input type='radio' name='active' value='true' style='margin-right: 18px; width: auto' <@ if config.active @>checked='checked'<@ endif @>>
-                <span class='uc-ion-narrow ion-android-hand w3-text-red'></span> <input type='radio' name='active' value='false' style='width: auto' <@ if config.active == false @>checked='checked'<@ endif @>>
-            </div>
-        </div>
-        <div class='w3-row w3-padding-hor-4'>
-            <label class='w3-col l3' for='name' style='padding-top: 4px'>Name:</label><div class='w3-col l4'><input name='name' value='{{ config.name }}'></div>
-        </div>
-        <div class='w3-row w3-padding-hor-4'>
-            <label class='w3-col l3' for='group_name'>Belongs to Group:</label><div class='w3-col l4'><input name='group_name' value='{{ config.group_name }}'></div>
-        </div>
-        <div class='w3-row w3-padding-hor-4'>
-            <label class='w3-col l3' for='url'>URL:</label><div class='w3-col l4'><input name='url' value='{{ config.url }}'></div>
-        </div>
-        <div class='w3-row w3-padding-hor-4'>
-            <label class='w3-col l3' for='data'>URL Data:</label><div class='w3-col l4'><input name='data' value='{{ config.data }}'></div>
-        </div>
-        <div class='w3-row w3-padding-hor-4'>
-            <label class='w3-col l3' for='interval'>Interval (in seconds):</label><div class='w3-col l4'><input name='interval' value='{{ config.interval }}' placeholder='default: 60'></div>
-        </div>
-        <div class='w3-row w3-padding-hor-4'>
-            <label class='w3-col l3'>Checks so far:</label><div class='w3-col l4'><span>{{ config.checks.length }}</span></div>
-        </div>
+    <ul class='tab'>
+        <li class='tab-item active'>
+            <a href='#basic-config'>Basic</a>
+        </li>
+        <li class='tab-item'>
+            <a href='#assumptions' class='badge' data-badge='{{ config.assumptions.length }}'>Assumptions</a>
+        </li>
+    </ul>
 
-        <div class='w3-row w3-padding-hor-24'>
-            <input type='submit' class='w3-btn w3-border w3-pale-green w3-small uc-width-small' value='Save'>
-            <a href='/uptime-checks'><button class='w3-btn w3-border w3-border-red w3-pale-red w3-small uc-width-small' type='button'>Cancel</button></a>
-        </div>
-    </form>
+    <div id='basic-config' class='tab-content active'>
+        <form action='/uptime-checks/{{ config._id }}' method='POST' enctype='application/json' autocomplete='off'>
+            <div class='w3-row w3-padding-hor-4'>
+                <div class='w3-col l3'>Status:</div>
+                <div class='w3-col l4'>
+                    <span class='uc-ion-narrow ion-ios-stopwatch-outline w3-text-green'></span> <input type='radio' name='active' value='true' style='margin-right: 18px; width: auto' <@ if config.active @>checked='checked'<@ endif @>>
+                    <span class='uc-ion-narrow ion-android-hand w3-text-red'></span> <input type='radio' name='active' value='false' style='width: auto' <@ if config.active == false @>checked='checked'<@ endif @>>
+                </div>
+            </div>
+            <div class='w3-row w3-padding-hor-4'>
+                <label class='w3-col l3' for='name' style='padding-top: 4px'>Name:</label><div class='w3-col l4'><input name='name' value='{{ config.name }}'></div>
+            </div>
+            <div class='w3-row w3-padding-hor-4'>
+                <label class='w3-col l3' for='group_name'>Belongs to Group:</label><div class='w3-col l4'><input name='group_name' value='{{ config.group_name }}'></div>
+            </div>
+            <div class='w3-row w3-padding-hor-4'>
+                <label class='w3-col l3' for='url'>URL:</label><div class='w3-col l4'><input name='url' value='{{ config.url }}'></div>
+            </div>
+            <div class='w3-row w3-padding-hor-4'>
+                <label class='w3-col l3' for='data'>URL Data:</label><div class='w3-col l4'><input name='data' value='{{ config.data }}'></div>
+            </div>
+            <div class='w3-row w3-padding-hor-4'>
+                <label class='w3-col l3' for='interval'>Interval (in seconds):</label><div class='w3-col l4'><input name='interval' value='{{ config.interval }}' placeholder='default: 60'></div>
+            </div>
+            <div class='w3-row w3-padding-hor-4'>
+                <label class='w3-col l3'>Checks so far:</label><div class='w3-col l4'><span>{{ config.checks.length }}</span></div>
+            </div>
+
+            <div class='w3-row w3-padding-hor-24'>
+                <input type='submit' class='w3-btn w3-border w3-pale-green w3-small uc-width-small' value='Save'>
+                <a href='/uptime-checks'><button class='w3-btn w3-border w3-border-red w3-pale-red w3-small uc-width-small' type='button'>Cancel</button></a>
+            </div>
+        </form>
+    </div>
+
+    <div id='assumptions' class='tab-content hidden'>
+        <form action='/uptime-checks/{{ config._id }}' method='POST' autocomplete='off'>
+            <div class='w3-row w3-padding-hor-4'>
+                <label class='w3-col l3' for='assumptions[0][label]'>Label:</label><div class='w3-col l4'><input name='assumptions[0][label]' value='{{ config.assumptions[0].label }}'></div>
+            </div>
+            <div class='w3-row w3-padding-hor-4'>
+                <label class='w3-col l3' for='assumptions[0][type]'>Type:</label><div class='w3-col l4'><input name='assumptions[0][type]' value='jQuery Selector' disabled='disabled'></div>
+            </div>
+            <div class='w3-row w3-padding-hor-4'>
+                <label class='w3-col l3' for='assumptions[0][value]'>Value:</label><div class='w3-col l4'><input name='assumptions[0][value]' value='{{ config.assumptions[0].value }}'></div>
+            </div>
+            <div class='w3-row w3-padding-hor-4'>
+                <label class='w3-col l3' for='assumptions[0][expected_value]'>Expected Value:</label><div class='w3-col l4'><input name='assumptions[0][expected_value]' value='{{ config.assumptions[0].expected_value }}'></div>
+            </div>
+
+            <div class='w3-row w3-padding-hor-24'>
+                <input type='submit' class='w3-btn w3-border w3-pale-green w3-small uc-width-small' value='Save'>
+                <a href='/uptime-checks'><button class='w3-btn w3-border w3-border-red w3-pale-red w3-small uc-width-small' type='button'>Cancel</button></a>
+            </div>
+        </form>
+    </div>
+
+    <script type='text/javascript'>
+
+        //
+        $jQ( document ).on( 'click', 'li.tab-item a', function()
+        {
+            var next_div = $jQ(this).attr( 'href' )
+
+            var previous_element = $jQ( 'ul.tab li.tab-item.active' )
+            var previous_div = previous_element.find( 'a' ).attr( 'href' )
+            
+            previous_element.removeClass( 'active' )
+            $jQ( previous_div ).addClass( 'hidden' )
+            
+            $jQ( next_div ).removeClass( 'hidden' )
+            $jQ(this).parent().addClass( 'active' )
+
+            return false;
+        })
+
+    </script>
 
 <@ endblock @>
