@@ -102,7 +102,7 @@ route.post( '/:cid', function( req, res )
                 {
                     intervalsHelper.handleRecurrentCheckConfiguration( req, config )
                     
-                    res.redirect( '/uptime-checks' )
+                    res.redirect( '/uptime-checks/'+ req.params['cid'] )
                 })
             })
 })
