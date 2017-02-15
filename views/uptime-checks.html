@@ -32,7 +32,7 @@
     // PUT request to change 'active' status-flag of config
     $jQ( document ).on( 'click', 'a.js-config-status', function()
     {
-        var span = $jQ(this).find( 'span.ion' )
+        var span = $jQ(this).find( 'span.uc-ion' )
         var url = $jQ(this).attr('href')
         var futureStatus = span.hasClass( 'js-config-enabled' ) ? false : true
 
