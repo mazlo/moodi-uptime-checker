@@ -48,7 +48,7 @@
     // PUT request to change 'active' status-flag of config
     $jQ( document ).on( 'click', 'a.js-config-status', function()
     {
-        var span = $jQ(this).find( 'span.ion' )
+        var span = $jQ(this).find( 'span.uc-ion' )
         var url = $jQ(this).attr('href')
         var futureStatus = span.hasClass( 'js-config-enabled' ) ? false : true
 
@@ -60,6 +60,7 @@
             {
                 // change status of icon
                 span.toggleClass( 'ion-ios-stopwatch-outline w3-text-green ion-android-hand w3-text-red js-config-enabled js-config-disabled' )
+
                 // update 'when'-column
                 if ( futureStatus == true )
                     span.closest( 'div.uc-config' ).find( 'div.js-config-when' ).text( data.when )
