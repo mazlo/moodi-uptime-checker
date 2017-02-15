@@ -39,7 +39,7 @@ exports.handleRecurrentCheckConfiguration = function( req, config )
 /* */
 exports.addRecurrentTask = function( req, config )
 {
-    var interval = setInterval( exports.doTask.bind(this, req, config), ( config.interval * 1000 ) )
+    var interval = setInterval( exports.doTask.bind( this, req, config ), ( config.interval * 1000 ) )
 
     return interval
 }
