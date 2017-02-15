@@ -128,3 +128,11 @@ td {
     padding: 18px;
     width: 60%;
 }
+
+/* */
+.tab-content.active {
+    display: block;
+}
+.tab-content.hidden {
+    display: none;
+}
