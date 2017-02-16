@@ -15,11 +15,20 @@ a:visited {
     text-decoration: none
 }
 
-input {
+button {
     outline: none;
-    width: 380px;
+    min-width: 72px;
     padding: 3px 5px;
     font-size: 14px;
+}
+input {
+    outline: none;
+    min-width: 72px;
+    padding: 3px 5px;
+    font-size: 14px;
+}
+input.uc-textfield {
+    width: 380px;
 }
 
 h2 {
@@ -98,7 +107,7 @@ form {
     width: 28px;
 }
 .uc-width-small {
-    width: 128px;
+    width: 72px;
 }
 .uc-center {
     text-align: center;
@@ -109,6 +118,10 @@ form {
 
 .uc-padding-hor-10 {
     padding: 10px 0;
+}
+.uc-code {
+    font-family: 'Courier New';
+    font-weight: normal;
 }
 
 /*  */
