@@ -51,10 +51,15 @@
     </div>
 
     <div id='assumptions' class='tab-content hidden'>
-        <@ if config.assumptions.length > 0 @>
         <form action='/uptime-checks/{{ config._id }}' method='POST' autocomplete='off'>
         
-            <@ for assump in config.assumptions @>
+        <@ if config.assumptions.length == 0 @>
+            <p>No assumptions so far. Create your first assumption with the form below.</p>
+        <@ endif @>
+
+            <h4>All Assumptions</h4>
+
+        <@ for assump in config.assumptions @>
             <div class='w3-row w3-padding-hor-4'>
                 <label class='w3-col l3' for='assumptions[{{ loop.index0 }}][label]'>Label:</label><div class='w3-col l4'><input class='uc-textfield' name='assumptions[{{ loop.index0 }}][label]' value='{{ assump.label }}'></div>
             </div>
@@ -67,18 +72,28 @@
             <div class='w3-row w3-padding-hor-4'>
                 <label class='w3-col l3' for='assumptions[{{ loop.index0 }}][expected_value]'>Expected Value:</label><div class='w3-col l4'><input class='uc-textfield' name='assumptions[{{ loop.index0 }}][expected_value]' value='{{ assump.expected_value }}'></div>
             </div>
-            <@ endfor @>
+        <@ endfor @>
+
+            <h4>Create new Assumption</h4>
+
+            <div class='w3-row w3-padding-hor-4'>
+                <label class='w3-col l3' for='assumptions[{{ config.assumptions.length }}][label]'>Label:</label><div class='w3-col l4'><input class='uc-textfield' name='assumptions[{{ config.assumptions.length }}][label]' value='' placeholder='length of list'></div>
+            </div>
+            <div class='w3-row w3-padding-hor-4'>
+                <label class='w3-col l3' for='assumptions[{{ config.assumptions.length }}][type]'>Type:</label><div class='w3-col l4'><input class='uc-textfield' name='assumptions[{{ config.assumptions.length }}][type]' value='jQuery Selector' disabled='disabled'></div>
+            </div>
+            <div class='w3-row w3-padding-hor-4'>
+                <label class='w3-col l3' for='assumptions[{{ config.assumptions.length }}][value]'>Value:</label><div class='w3-col l4'><input class='uc-textfield uc-code' name='assumptions[{{ config.assumptions.length }}][value]' value='' placeholder='$("div.my-class").length'></div>
+            </div>
+            <div class='w3-row w3-padding-hor-4'>
+                <label class='w3-col l3' for='assumptions[{{ config.assumptions.length }}][expected_value]'>Expected Value:</label><div class='w3-col l4'><input class='uc-textfield' name='assumptions[{{ config.assumptions.length }}][expected_value]' value='' placeholder='3'></div>
+            </div>
 
             <div class='w3-row w3-padding-hor-24'>
                 <input type='submit' class='w3-border w3-small' value='Save'>
                 <a href='/uptime-checks'><button class='uc-background-none w3-small' type='button'>Cancel</button></a>
             </div>
         </form>
-        <@ else @>
-        <div class='w3-row w3-padding-hor-4'>
-            <p>No assumptions so far.</p>
-        </div>
-        <@ endif @>
     </div>
 
     <script type='text/javascript'>
