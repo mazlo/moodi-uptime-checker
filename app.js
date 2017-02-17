@@ -2,6 +2,7 @@ var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var fs = require( 'fs' );
+var mkdirp = require( 'mkdirp' );
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -44,14 +45,17 @@ app.set('view engine', 'nunjucks');
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
-// create a write stream (in append mode)
-var accessLogStream = fs.createWriteStream( path.join(__dirname, 'logs', 'access.log'), { flags: 'a'} )
-
-app.use(logger(':method :url :status :response-time ms, :remote-addr', 
+mkdirp( 'logs', function( err )
 {
-    stream: accessLogStream,
-    skip: function (req, res) { return res.statusCode == 304 }
-}));
+  // create a write stream (in append mode)
+  var accessLogStream = fs.createWriteStream( path.join(__dirname, 'logs', 'access.log'), { flags: 'a'} )
+
+  app.use(logger(':method :url :status :response-time ms, :remote-addr', 
+  {
+      stream: accessLogStream,
+      skip: function (req, res) { return res.statusCode == 304 }
+  }));
+})
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
