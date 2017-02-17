@@ -46,6 +46,8 @@ h3 {
 }
 h4 {
     margin: 23px 0 6px 0;
+    font-weight: normal;
+    color: #5764c6;
 }
 
 table {
@@ -107,6 +109,9 @@ form {
     cursor: pointer;
 }
 
+.uc-text-blue {
+    color: #5764c6;
+}
 .uc-width-really-short {
     width: 28px;
 }
