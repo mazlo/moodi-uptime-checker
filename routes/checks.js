@@ -45,7 +45,7 @@ route.post( '/', function( req, res )
 
         intervalsHelper.handleRecurrentCheckConfiguration( req, config )
 
-        res.redirect( '/uptime-checks' )
+        res.redirect( '/uptime-checks/'+ config._id )
     })
 })
 
