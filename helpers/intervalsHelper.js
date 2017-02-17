@@ -1,6 +1,7 @@
 var mongoose = require('mongoose'),
     CheckConfig = mongoose.model( 'CheckConfig' ),
     Check = mongoose.model( 'Check' ),
+    AssumptionExecuted = mongoose.model( 'AssumptionExecuted' ),
     request = require( 'request' ),
     io = require( 'socket.io' ),
     cheerio = require( 'cheerio' )
@@ -72,8 +73,28 @@ exports.doTask = function( req, config )
         config.last_duration = check.duration
 
         config.markModified( 'checks' )
-        config.checks.push( check )
 
+        // evaluate assumptions if any
+        if ( config.assumptions && config.assumptions.length > 0 && config.last_response != 500 )
+        {
+            check.markModified( 'assumptions' )
+
+            $ = cheerio.load(body)
+
+            for( let obj of config.assumptions )
+            {
+                var value_returned = eval(obj.value)
+
+                if ( value_returned == obj.value_expected )
+                    check.assumptions.push( new AssumptionExecuted({ assumption: obj._id, succeed: true }) )
+                else
+                    check.assumptions.push( new AssumptionExecuted({ assumption: obj._id, succeed: false, value_returned: value_returned }) )
+            }
+        }
+
+        console.log( check )
+
+        config.checks.push( check )
         config.save( function( err )
         {
             if ( err ) console.log( err )
@@ -81,23 +102,5 @@ exports.doTask = function( req, config )
             console.log( 'SAVE check in: '+ config._id )
             req.io.sockets.emit( 'check response', config );
         })
-
-        // evaluate assumptions if any
-
-        if ( config.last_response == 500 )
-            return
-
-        if ( !config.assumptions || config.assumptions.length == 0 )
-            return
-
-        $ = cheerio.load(body)
-
-        for( let obj of config.assumptions )
-        {
-            if ( eval(obj.value) == obj.expected_value )
-                console.log( 'great!' )
-            else
-                console.log( 'oh no..' )
-        }
     })
 }

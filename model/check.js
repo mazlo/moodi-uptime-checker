@@ -1,18 +1,25 @@
 var mongoose = require( 'mongoose' ),
     Schema = mongoose.Schema
 
+var assumptionExecutedSchema = new Schema({
+    assumption: { type: Schema.ObjectId, ref: 'Assumption' },
+    succeed: Boolean,
+    value_returned: String
+})
+
 var checkSchema = new Schema({
     when: Number,
     duration: Number,
     response: String,
-    statusCode: Number
+    statusCode: Number,
+    assumptions: [assumptionExecutedSchema]
 })
 
 var assumptionSchema = new Schema({
     label: String,
     type: String,
     value: String,
-    expected_value: String
+    value_expected: String,
 })
 
 var checkConfigSchema = new Schema({
@@ -33,4 +40,5 @@ var checkConfigSchema = new Schema({
 
 mongoose.model( 'Check', checkSchema );
 mongoose.model( 'Assumption', assumptionSchema );
+mongoose.model( 'AssumptionExecuted', assumptionExecutedSchema );
 mongoose.model( 'CheckConfig', checkConfigSchema );
