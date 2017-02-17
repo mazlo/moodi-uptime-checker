@@ -102,10 +102,28 @@ route.get( '/:cid/once', function( req, res )
 /* Update one CheckConfig with given :id VIA FORM */
 route.post( '/:cid', function( req, res )
 {
+    // this is passed to mongoose update method
+    var configFiltered = req.body
+
+    // user submitted assumptions form -> validate
+    if ( req.body.assumptions && req.body.assumptions.length > 0 )
+    {
+        configFiltered = { 
+            // filter those where label is empty
+            assumptions: req.body.assumptions.filter( function( assumption )
+            {
+                if ( assumption.label == '' )
+                    return false
+
+                return true
+            }) 
+        }
+    }
+
     CheckConfig
         .findOneAndUpdate( 
             { "_id" : req.params['cid'] },
-            { "$set" : req.body },
+            { "$set" : configFiltered },
             { new : true },
             function( err, config ) 
             {
