@@ -15,20 +15,24 @@ a:visited {
     text-decoration: none
 }
 
-button {
-    outline: none;
-    min-width: 72px;
-    padding: 3px 5px;
-    font-size: 14px;
-}
+button,
 input {
     outline: none;
+    border: none;
+    border-radius: 2px;
+    background-color: #fefefe;
     min-width: 72px;
-    padding: 3px 5px;
+    padding: 8px 13px;
     font-size: 14px;
+    font-family: inherit;
+    cursor: pointer;
 }
 input.uc-textfield {
+    border: 1px solid #ccc;
+    background-color: transparent;
     width: 380px;
+    padding: 5px 8px;
+    cursor: text;
 }
 
 h2 {
@@ -122,6 +126,11 @@ form {
 .uc-code {
     font-family: 'Courier New';
     font-weight: normal;
+}
+
+.uc-background-none {
+    background: none !important;
+    background-color: none !important;
 }
 
 /*  */

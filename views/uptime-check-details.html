@@ -31,7 +31,7 @@
                 <label class='w3-col l3' for='group_name'>Belongs to Group:</label><div class='w3-col l4'><input class='uc-textfield' name='group_name' value='{{ config.group_name }}'></div>
             </div>
             <div class='w3-row w3-padding-hor-4'>
-                <label class='w3-col l3' for='url'>URL:</label><div class='w3-col l4'><input class='uc-textfield' name='url' value='{{ config.url }}'></div>
+                <label class='w3-col l3' for='url'>URL:</label><div class='w3-col l4'><input class='uc-textfield uc-code' name='url' value='{{ config.url }}'></div>
             </div>
             <div class='w3-row w3-padding-hor-4'>
                 <label class='w3-col l3' for='data'>URL Data:</label><div class='w3-col l4'><input class='uc-textfield' name='data' value='{{ config.data }}'></div>
@@ -44,8 +44,8 @@
             </div>
 
             <div class='w3-row w3-padding-hor-24'>
-                <input type='submit' class='w3-btn w3-border w3-pale-green w3-small' value='Save'>
-                <a href='/uptime-checks'><button class='w3-btn w3-border w3-border-red w3-pale-red w3-small' type='button'>Cancel</button></a>
+                <input type='submit' class='w3-border w3-small' value='Save'>
+                <a href='/uptime-checks'><button class='uc-background-none w3-small' type='button'>Go back</button></a>
             </div>
         </form>
     </div>
@@ -67,8 +67,8 @@
             </div>
 
             <div class='w3-row w3-padding-hor-24'>
-                <input type='submit' class='w3-btn w3-border w3-pale-green w3-small' value='Save'>
-                <a href='/uptime-checks'><button class='w3-btn w3-border w3-border-red w3-pale-red w3-small' type='button'>Cancel</button></a>
+                <input type='submit' class='w3-border w3-small' value='Save'>
+                <a href='/uptime-checks'><button class='uc-background-none w3-small' type='button'>Cancel</button></a>
             </div>
         <@ endfor @>
         </form>
