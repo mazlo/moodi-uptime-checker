@@ -55,9 +55,9 @@
         
         <@ if config.assumptions.length == 0 @>
             <p>No assumptions so far. Create your first assumption with the form below.</p>
-        <@ endif @>
-
+        <@ else @>
             <h4>All Assumptions</h4>
+        <@ endif @>
 
         <@ for assump in config.assumptions @>
             <div class='w3-margin-bottom uc-assumption'>
