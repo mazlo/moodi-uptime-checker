@@ -19,7 +19,7 @@ var assumptionSchema = new Schema({
     label: String,
     type: String,
     value: String,
-    expected_value: String
+    value_expected: String,
 })
 
 var checkConfigSchema = new Schema({
