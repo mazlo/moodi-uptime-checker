@@ -45,7 +45,7 @@ route.post( '/', function( req, res )
 
         intervalsHelper.handleRecurrentCheckConfiguration( req, config )
 
-        res.redirect( '/uptime-checks' )
+        res.redirect( '/uptime-checks/'+ config._id )
     })
 })
 
@@ -82,7 +82,7 @@ route.get( '/:cid', function( req, res )
 })
 
 /* GET /uptime-checks/:id/once */
-/* Show details for CheckConfig with given :id */
+/* Invokes CheckConfig only once */
 route.get( '/:cid/once', function( req, res )
 {
     CheckConfig
@@ -102,10 +102,28 @@ route.get( '/:cid/once', function( req, res )
 /* Update one CheckConfig with given :id VIA FORM */
 route.post( '/:cid', function( req, res )
 {
+    // this is passed to mongoose update method
+    var configFiltered = req.body
+
+    // user submitted assumptions form -> validate
+    if ( req.body.assumptions && req.body.assumptions.length > 0 )
+    {
+        configFiltered = { 
+            // filter those where label is empty
+            assumptions: req.body.assumptions.filter( function( assumption )
+            {
+                if ( assumption.label == '' )
+                    return false
+
+                return true
+            }) 
+        }
+    }
+
     CheckConfig
         .findOneAndUpdate( 
             { "_id" : req.params['cid'] },
-            { "$set" : req.body },
+            { "$set" : configFiltered },
             { new : true },
             function( err, config ) 
             {
@@ -119,7 +137,7 @@ route.post( '/:cid', function( req, res )
                 {
                     intervalsHelper.handleRecurrentCheckConfiguration( req, config )
                     
-                    res.redirect( '/uptime-checks' )
+                    res.redirect( '/uptime-checks/'+ req.params['cid'] )
                 })
             })
 })
@@ -153,6 +171,22 @@ route.put( '/:cid', function( req, res )
                 })
             }
         )
+})
+
+/* GET /uptime-checks/:id/assumptions */
+/* Returns details about the executed Assumptions of a CheckConfig */
+route.get( '/:cid/assumptions', function( req, res )
+{
+    CheckConfig
+        .findById( req.params['cid'] )
+        .populate( 'checks' )
+        .exec( function( err, config )
+        {
+            if ( err ) console.log( err )
+            if ( config == undefined ) res.json( { status: 500 } )
+            
+            res.render( 'uptime-check-assumptions-details.html', { config: config })
+        })
 })
 
 module.exports = route;

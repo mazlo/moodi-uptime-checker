@@ -5,7 +5,7 @@
 <@ endblock @>
 
 <@ block content @>
-
+<div class='w3-row'>
     <div class='w3-row w3-padding-hor-4 uc-border-bottom'>
         <div class='w3-col l1 w3-padding-hor-4'>Status</div>
         <div class='w3-col l4 w3-padding-hor-4'>Name</div>
@@ -16,18 +16,26 @@
     </div>
     <@ for config in configs @>
     <div class='uc-config w3-row uc-padding-hor-10 uc-border-top' id='{{ config._id }}'>
-        <div class='w3-col l1'><a href='/uptime-checks/{{ config._id }}' class='js-config-status'><span class='uc-ion <@ if config.active @>ion-ios-stopwatch-outline w3-text-green js-config-enabled<@ else @>ion-android-hand w3-text-red js-config-disabled<@ endif @>'></span></a></div>
-        <div class='w3-col l4'><h4 class='w3-margin-0'><a href='/uptime-checks/{{ config._id }}'>{{ config.name }}</a></h4></div>
+        <div class='w3-col l1'><a href='/uptime-checks/{{ config._id }}' class='js-config-status'><span class='uc-ion ion-ios-timer-outline <@ if config.active @>w3-text-green js-config-enabled<@ else @>w3-text-red js-config-disabled<@ endif @>'></span></a></div>
+        <div class='w3-col l4'><b><a href='/uptime-checks/{{ config._id }}'>{{ config.name }}</a></b></div>
         <div class='w3-col l2 js-config-when'><@if config.active @>every {{ config.interval }}s<@ else @>not scheduled<@ endif @></div>
         <div class='w3-col l2 js-config-last-response'>{{ config.last_response }}</div>
         <div class='w3-col l2 js-config-last-duration'>{{ config.last_duration }}</div>
-        <div class='w3-col l1'><a href='/uptime-checks/{{ config._id }}/once' class='js-config-run'><span class='uc-ion <@ if not config.active @>ion-ios-redo-outline<@ endif @>'></span></a></div>
+        <div class='w3-col l1'>
+            <a href='/uptime-checks/{{ config._id }}/assumptions' class='js-config-assumption-details'><span class='uc-ion-narrow ion-ios-list-outline'></span></a>
+            <a href='/uptime-checks/{{ config._id }}/once' class='js-config-run'><span class='uc-ion <@ if not config.active @>ion-ios-play-outline<@ endif @>'></span></a>
+        </div>
     </div>
     <@ endfor @>
 
     <div class='w3-row w3-padding-hor-24'>
-        <a href='/uptime-checks/create'><button class='w3-btn w3-border w3-pale-green w3-small uc-width-small'>Create Check</button></a>
+        <a href='/uptime-checks/create'><button class='w3-border w3-small'>Create Check</button></a>
     </div>
+</div>
+
+<div class='w3-row' id='uc-config-assumption-details'>
+    <!-- ajax response -->
+</div>
 
     <script type='text/javascript'>
 
@@ -40,6 +48,23 @@
             url: url,
             type: 'GET',
             success: function( data ) { /* nothing to be done */ }
+        })
+
+        return false;
+    })
+
+    //
+    $jQ( document ).on( 'click', 'a.js-config-assumption-details', function()
+    {
+        var url = $jQ(this).attr('href')
+
+        $jQ.ajax({
+            url: url,
+            type: 'GET',
+            success: function( data ) 
+            {
+                $jQ( '#uc-config-assumption-details' ).html( data ) 
+            }
         })
 
         return false;

@@ -6,37 +6,139 @@
 
 <@ block content @>
 
-    <form action='/uptime-checks/{{ config._id }}' method='POST' enctype='application/json'>
-        <div class='w3-row w3-padding-hor-4'>
-            <div class='w3-col l3'>Status:</div>
-            <div class='w3-col l4'>
-                <span class='uc-ion-narrow ion-ios-stopwatch-outline w3-text-green'></span> <input type='radio' name='active' value='true' style='margin-right: 18px; width: auto' <@ if config.active @>checked='checked'<@ endif @>>
-                <span class='uc-ion-narrow ion-android-hand w3-text-red'></span> <input type='radio' name='active' value='false' style='width: auto' <@ if config.active == false @>checked='checked'<@ endif @>>
-            </div>
-        </div>
-        <div class='w3-row w3-padding-hor-4'>
-            <label class='w3-col l3' for='name' style='padding-top: 4px'>Name:</label><div class='w3-col l4'><input name='name' value='{{ config.name }}'></div>
-        </div>
-        <div class='w3-row w3-padding-hor-4'>
-            <label class='w3-col l3' for='group_name'>Belongs to Group:</label><div class='w3-col l4'><input name='group_name' value='{{ config.group_name }}'></div>
-        </div>
-        <div class='w3-row w3-padding-hor-4'>
-            <label class='w3-col l3' for='url'>URL:</label><div class='w3-col l4'><input name='url' value='{{ config.url }}'></div>
-        </div>
-        <div class='w3-row w3-padding-hor-4'>
-            <label class='w3-col l3' for='data'>URL Data:</label><div class='w3-col l4'><input name='data' value='{{ config.data }}'></div>
-        </div>
-        <div class='w3-row w3-padding-hor-4'>
-            <label class='w3-col l3' for='interval'>Interval (in seconds):</label><div class='w3-col l4'><input name='interval' value='{{ config.interval }}' placeholder='default: 60'></div>
-        </div>
-        <div class='w3-row w3-padding-hor-4'>
-            <label class='w3-col l3'>Checks so far:</label><div class='w3-col l4'><span>{{ config.checks.length }}</span></div>
-        </div>
+    <ul class='tab'>
+        <li class='tab-item active'>
+            <a href='#basic-config'>Basic</a>
+        </li>
+        <li class='tab-item'>
+            <a href='#assumptions' class='badge' data-badge='{{ config.assumptions.length }}'>Assumptions</a>
+        </li>
+    </ul>
 
-        <div class='w3-row w3-padding-hor-24'>
-            <input type='submit' class='w3-btn w3-border w3-pale-green w3-small uc-width-small' value='Save'>
-            <a href='/uptime-checks'><button class='w3-btn w3-border w3-border-red w3-pale-red w3-small uc-width-small' type='button'>Cancel</button></a>
-        </div>
-    </form>
+    <div id='basic-config' class='tab-content active'>
+        <form action='/uptime-checks/{{ config._id }}' method='POST' autocomplete='off'>
+            <div class='w3-row w3-padding-hor-4'>
+                <div class='w3-col l3'>Status:</div>
+                <div class='w3-col l4'>
+                    <span class='uc-ion-narrow ion-ios-stopwatch-outline w3-text-green'></span> <input type='radio' name='active' value='true' style='margin-right: 18px; width: auto' <@ if config.active @>checked='checked'<@ endif @>>
+                    <span class='uc-ion-narrow ion-android-hand w3-text-red'></span> <input type='radio' name='active' value='false' style='width: auto' <@ if config.active == false @>checked='checked'<@ endif @>>
+                </div>
+            </div>
+            <div class='w3-row w3-padding-hor-4'>
+                <label class='w3-col l3' for='name' style='padding-top: 4px'>Name:</label><div class='w3-col l4'><input class='uc-textfield w3-border-orange' name='name' value='{{ config.name }}'></div>
+            </div>
+            <div class='w3-row w3-padding-hor-4'>
+                <label class='w3-col l3' for='group_name'>Belongs to Group:</label><div class='w3-col l4'><input class='uc-textfield' name='group_name' value='{{ config.group_name }}'></div>
+            </div>
+            <div class='w3-row w3-padding-hor-4'>
+                <label class='w3-col l3' for='url'>URL:</label><div class='w3-col l4'><input class='uc-textfield uc-code' name='url' value='{{ config.url }}'></div>
+            </div>
+            <div class='w3-row w3-padding-hor-4'>
+                <label class='w3-col l3' for='data'>URL Data:</label><div class='w3-col l4'><input class='uc-textfield' name='data' value='{{ config.data }}'></div>
+            </div>
+            <div class='w3-row w3-padding-hor-4'>
+                <label class='w3-col l3' for='interval'>Interval (in seconds):</label><div class='w3-col l4'><input class='uc-textfield' name='interval' value='{{ config.interval }}' placeholder='default: 60'></div>
+            </div>
+            <div class='w3-row w3-padding-hor-4'>
+                <label class='w3-col l3'>Checks so far:</label><div class='w3-col l4'><span>{{ config.checks.length }}</span></div>
+            </div>
+
+            <div class='w3-row w3-padding-hor-24'>
+                <input type='submit' class='w3-border w3-small' value='Save'>
+                <a href='/uptime-checks'><button class='uc-background-none w3-small' type='button'>Go back</button></a>
+            </div>
+        </form>
+    </div>
+
+    <div id='assumptions' class='tab-content hidden'>
+        <form action='/uptime-checks/{{ config._id }}' method='POST' autocomplete='off'>
+        
+        <@ if config.assumptions.length == 0 @>
+            <p>No assumptions so far. Create your first assumption with the form below.</p>
+        <@ else @>
+            <h4>All Assumptions</h4>
+        <@ endif @>
+
+        <@ for assump in config.assumptions @>
+            <div class='w3-margin-bottom uc-assumption'>
+                <div class='w3-row w3-padding-hor-4'>
+                    <label class='w3-col l3' for='assumptions[{{ loop.index0 }}][label]'>Label:</label><div class='w3-col l4'><input class='uc-textfield w3-border-orange' name='assumptions[{{ loop.index0 }}][label]' value='{{ assump.label }}'></div>
+                </div>
+                <div class='w3-row w3-padding-hor-4'>
+                    <label class='w3-col l3' for='assumptions[{{ loop.index0 }}][type]'>Type:</label><div class='w3-col l4'><input class='uc-textfield' name='assumptions[{{ loop.index0 }}][type]' value='jQuery Selector' disabled='disabled'></div>
+                </div>
+                <div class='w3-row w3-padding-hor-4'>
+                    <label class='w3-col l3' for='assumptions[{{ loop.index0 }}][value]'>Value:</label><div class='w3-col l4'><input class='uc-textfield uc-code' name='assumptions[{{ loop.index0 }}][value]' value='{{ assump.value }}'></div>
+                </div>
+                <div class='w3-row w3-padding-hor-4'>
+                    <label class='w3-col l3' for='assumptions[{{ loop.index0 }}][value_expected]'>Expected Value:</label><div class='w3-col l4'><input class='uc-textfield' name='assumptions[{{ loop.index0 }}][value_expected]' value='{{ assump.value_expected }}'></div>
+                </div>
+                
+                <div class='w3-row w3-padding-hor-4'>
+                    <button class='w3-border w3-small js-config-assumption-remove' type='button'>Remove</button>
+                </div>
+            </div>
+        <@ endfor @>
+
+            <h4>Create new Assumption</h4>
+
+            <div class='w3-row w3-padding-hor-4'>
+                <label class='w3-col l3' for='assumptions[{{ config.assumptions.length }}][label]'>Label:</label><div class='w3-col l4'><input class='uc-textfield w3-border-orange' name='assumptions[{{ config.assumptions.length }}][label]' value='' placeholder='length of list'></div>
+            </div>
+            <div class='w3-row w3-padding-hor-4'>
+                <label class='w3-col l3' for='assumptions[{{ config.assumptions.length }}][type]'>Type:</label><div class='w3-col l4'><input class='uc-textfield' name='assumptions[{{ config.assumptions.length }}][type]' value='jQuery Selector' disabled='disabled'></div>
+            </div>
+            <div class='w3-row w3-padding-hor-4'>
+                <label class='w3-col l3' for='assumptions[{{ config.assumptions.length }}][value]'>Value:</label><div class='w3-col l4'><input class='uc-textfield uc-code' name='assumptions[{{ config.assumptions.length }}][value]' value='' placeholder='$("div.my-class").length'></div>
+            </div>
+            <div class='w3-row w3-padding-hor-4'>
+                <label class='w3-col l3' for='assumptions[{{ config.assumptions.length }}][value_expected]'>Expected Value:</label><div class='w3-col l4'><input class='uc-textfield' name='assumptions[{{ config.assumptions.length }}][value_expected]' value='' placeholder='3'></div>
+            </div>
+
+            <div class='w3-row w3-padding-hor-24'>
+                <input type='submit' class='w3-border w3-small' value='Save'>
+                <a href='/uptime-checks'><button class='uc-background-none w3-small' type='button'>Go back</button></a>
+            </div>
+        </form>
+    </div>
+
+    <script type='text/javascript'>
+
+        //
+        $jQ( function()
+        {
+            var currentlocation = window.location
+            
+            if ( currentlocation.hash == '' )
+                return
+
+            $jQ( 'li.tab-item a[href="'+ currentlocation.hash +'"]' ).click()
+
+        })
+
+        //
+        $jQ( document ).on( 'click', 'li.tab-item a', function()
+        {
+            var next_div = $jQ(this).attr( 'href' )
+
+            var previous_element = $jQ( 'ul.tab li.tab-item.active' )
+            var previous_div = previous_element.find( 'a' ).attr( 'href' )
+            
+            previous_element.removeClass( 'active' )
+            $jQ( previous_div ).addClass( 'hidden' )
+            
+            $jQ( next_div ).removeClass( 'hidden' )
+            $jQ(this).parent().addClass( 'active' )
+
+            return false;
+        })
+
+        //
+        $jQ( document ).on( 'click', 'button.js-config-assumption-remove', function()
+        {
+            $jQ(this).closest( 'div.uc-assumption' ).remove()
+        })
+
+    </script>
 
 <@ endblock @>
