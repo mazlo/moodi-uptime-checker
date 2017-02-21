@@ -5,7 +5,8 @@ var mongoose = require('mongoose'),
 
     CheckConfig = mongoose.model( 'CheckConfig' ),
     Check = mongoose.model( 'Check' ),
-    AssumptionExecuted = mongoose.model( 'AssumptionExecuted' );
+    AssumptionExecuted = mongoose.model( 'AssumptionExecuted' ),
+    ObjectId = mongoose.Types.ObjectId;
 
 /* */
 exports.intervalsMap = {};
@@ -61,33 +62,38 @@ exports.doTask = function( req, config )
         headers: { 'User-Agent': 'uptime-checker' }
     }, function( err, response, body )
     {
+        if ( err ) console.log( err )
+
+        // save status code and time first
+        config.last_response = response.statusCode
+        config.last_duration = Date.now() - when
+    
         // save response as Check
         var check = new Check()
 
-        check.statusCode = response.statusCode
-
+        check.statusCode = config.last_response
+        check.duration = config.last_duration
         check.when = when
-        check.duration = Date.now() - when
         check.response = body
 
-        config.last_response = check.statusCode
-        config.last_duration = check.duration
-
-        config.markModified( 'checks' )
-
-        // evaluate assumptions if any
+        // evaluate assumptions if there are any
         if ( config.assumptions && config.assumptions.length > 0 && config.last_response != 500 )
         {
-            check.markModified( 'assumptions' )
+            // associate with the calling CheckConfig
+            check._checkconfig = ObjectId( config._id )
 
+            // load the parsing model
             $ = cheerio.load(body)
 
+            check.markModified( 'assumptions' )
+
+            // prove each assumption and save it in the Check
             for( let obj of config.assumptions )
             {
                 var value_returned = eval(obj.value)
 
                 var assumption = Object.assign( new AssumptionExecuted(), obj )
-                assumption._id = mongoose.Types.ObjectId()
+                assumption._id = ObjectId()
                 assumption.value_returned = value_returned
 
                 if ( value_returned == obj.value_expected )
@@ -97,15 +103,21 @@ exports.doTask = function( req, config )
 
                 check.assumptions.push( assumption )
             }
+
+            // save Check and push check._id to CheckConfig
+            check.save( function( err )
+            {
+                if ( err ) console.log( err )
+
+                config.checks.push( check )
+
+                config.save( function( err )
+                {
+                    console.log( 'SAVE check in: '+ config._id )
+                    req.io.sockets.emit( 'check response', config );
+                })
+            })
         }
-
-        config.checks.push( check )
-        config.save( function( err )
-        {
-            if ( err ) console.log( err )
-
-            console.log( 'SAVE check in: '+ config._id )
-            req.io.sockets.emit( 'check response', config );
-        })
+        
     })
 }

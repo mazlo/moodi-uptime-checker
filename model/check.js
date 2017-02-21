@@ -11,6 +11,7 @@ var assumptionSchema = new Schema({
 })
 
 var checkSchema = new Schema({
+    _checkconfig: { type: Schema.Types.ObjectId, ref: 'CheckConfig' },
     when: Number,
     duration: Number,
     response: String,
@@ -19,6 +20,7 @@ var checkSchema = new Schema({
 })
 
 var checkConfigSchema = new Schema({
+    _id: Schema.Types.ObjectId,
     active: { type: Boolean, default: false },
     group_name: String,
     name: String,
@@ -27,7 +29,7 @@ var checkConfigSchema = new Schema({
     data: String,
     interval: { type: Number, default: 60 },
     
-    checks: [checkSchema],
+    checks: [{ type: Schema.Types.ObjectId, ref: 'Check' }],
     last_response: Number,
     last_duration: Number,
 
