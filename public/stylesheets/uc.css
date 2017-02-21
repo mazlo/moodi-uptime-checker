@@ -106,6 +106,7 @@ p {
     margin: 0 6px;
     width: 16px;
     cursor: pointer;
+    font-size: 17px;
 }
 .uc-ion-narrow {
     display: inline-block;
