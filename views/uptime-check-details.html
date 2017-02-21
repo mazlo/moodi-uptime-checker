@@ -105,6 +105,18 @@
     <script type='text/javascript'>
 
         //
+        $jQ( function()
+        {
+            var currentlocation = window.location
+            
+            if ( currentlocation.hash == '' )
+                return
+
+            $jQ( 'li.tab-item a[href="'+ currentlocation.hash +'"]' ).click()
+
+        })
+
+        //
         $jQ( document ).on( 'click', 'li.tab-item a', function()
         {
             var next_div = $jQ(this).attr( 'href' )
