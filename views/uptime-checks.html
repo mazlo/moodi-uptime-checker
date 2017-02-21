@@ -21,12 +21,19 @@
         <div class='w3-col l2 js-config-when'><@if config.active @>every {{ config.interval }}s<@ else @>not scheduled<@ endif @></div>
         <div class='w3-col l2 js-config-last-response'>{{ config.last_response }}</div>
         <div class='w3-col l2 js-config-last-duration'>{{ config.last_duration }}</div>
-        <div class='w3-col l1'><a href='/uptime-checks/{{ config._id }}/once' class='js-config-run'><span class='uc-ion <@ if not config.active @>ion-ios-play-outline<@ endif @>'></span></a></div>
+        <div class='w3-col l1'>
+            <a href='/uptime-checks/{{ config._id }}/assumptions' class='js-config-assumption-details'><span class='uc-ion-narrow ion-ios-list-outline'></span></a>
+            <a href='/uptime-checks/{{ config._id }}/once' class='js-config-run'><span class='uc-ion <@ if not config.active @>ion-ios-play-outline<@ endif @>'></span></a>
+        </div>
     </div>
     <@ endfor @>
 
     <div class='w3-row w3-padding-hor-24'>
         <a href='/uptime-checks/create'><button class='w3-border w3-small'>Create Check</button></a>
+    </div>
+
+    <div id='uc-config-assumption-details' class='w3-row w3-padding-hor-24'>
+        <!-- ajax response -->
     </div>
 
     <script type='text/javascript'>
@@ -40,6 +47,23 @@
             url: url,
             type: 'GET',
             success: function( data ) { /* nothing to be done */ }
+        })
+
+        return false;
+    })
+
+    //
+    $jQ( document ).on( 'click', 'a.js-config-assumption-details', function()
+    {
+        var url = $jQ(this).attr('href')
+
+        $jQ.ajax({
+            url: url,
+            type: 'GET',
+            success: function( data ) 
+            {
+                $jQ( '#uc-config-assumption-details' ).html( data ) 
+            }
         })
 
         return false;

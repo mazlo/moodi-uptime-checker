@@ -82,7 +82,7 @@ route.get( '/:cid', function( req, res )
 })
 
 /* GET /uptime-checks/:id/once */
-/* Show details for CheckConfig with given :id */
+/* Invokes CheckConfig only once */
 route.get( '/:cid/once', function( req, res )
 {
     CheckConfig
@@ -171,6 +171,22 @@ route.put( '/:cid', function( req, res )
                 })
             }
         )
+})
+
+/* GET /uptime-checks/:id/assumptions */
+/* Returns details about the executed Assumptions of a CheckConfig */
+route.get( '/:cid/assumptions', function( req, res )
+{
+    CheckConfig
+        .findById( req.params['cid'] )
+        .populate( 'checks' )
+        .exec( function( err, config )
+        {
+            if ( err ) console.log( err )
+            if ( config == undefined ) res.json( { status: 500 } )
+            
+            res.render( 'uptime-check-assumptions-details.html', { config: config })
+        })
 })
 
 module.exports = route;
