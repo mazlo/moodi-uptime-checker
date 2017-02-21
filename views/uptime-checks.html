@@ -5,7 +5,7 @@
 <@ endblock @>
 
 <@ block content @>
-
+<div class='w3-row'>
     <div class='w3-row w3-padding-hor-4 uc-border-bottom'>
         <div class='w3-col l1 w3-padding-hor-4'>Status</div>
         <div class='w3-col l4 w3-padding-hor-4'>Name</div>
@@ -31,10 +31,11 @@
     <div class='w3-row w3-padding-hor-24'>
         <a href='/uptime-checks/create'><button class='w3-border w3-small'>Create Check</button></a>
     </div>
+</div>
 
-    <div id='uc-config-assumption-details' class='w3-row w3-padding-hor-24'>
-        <!-- ajax response -->
-    </div>
+<div class='w3-row' id='uc-config-assumption-details'>
+    <!-- ajax response -->
+</div>
 
     <script type='text/javascript'>
 
