@@ -1,10 +1,11 @@
 var mongoose = require('mongoose'),
-    CheckConfig = mongoose.model( 'CheckConfig' ),
-    Check = mongoose.model( 'Check' ),
-    AssumptionExecuted = mongoose.model( 'AssumptionExecuted' ),
     request = require( 'request' ),
     io = require( 'socket.io' ),
-    cheerio = require( 'cheerio' )
+    cheerio = require( 'cheerio' ),
+
+    CheckConfig = mongoose.model( 'CheckConfig' ),
+    Check = mongoose.model( 'Check' ),
+    AssumptionExecuted = mongoose.model( 'AssumptionExecuted' );
 
 /* */
 exports.intervalsMap = {};
@@ -85,14 +86,18 @@ exports.doTask = function( req, config )
             {
                 var value_returned = eval(obj.value)
 
+                var assumption = Object.assign( new AssumptionExecuted(), obj )
+                assumption._id = mongoose.Types.ObjectId()
+                assumption.value_returned = value_returned
+
                 if ( value_returned == obj.value_expected )
-                    check.assumptions.push( new AssumptionExecuted({ assumption: obj._id, succeed: true }) )
+                    assumption.succeed = true
                 else
-                    check.assumptions.push( new AssumptionExecuted({ assumption: obj._id, succeed: false, value_returned: value_returned }) )
+                    assumption.succeed = false
+
+                check.assumptions.push( assumption )
             }
         }
-
-        console.log( check )
 
         config.checks.push( check )
         config.save( function( err )
