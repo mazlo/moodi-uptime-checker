@@ -103,21 +103,21 @@ exports.doTask = function( req, config )
 
                 check.assumptions.push( assumption )
             }
-
-            // save Check and push check._id to CheckConfig
-            check.save( function( err )
-            {
-                if ( err ) console.log( err )
-
-                config.checks.push( check )
-
-                config.save( function( err )
-                {
-                    console.log( 'SAVE check in: '+ config._id )
-                    req.io.sockets.emit( 'check response', config );
-                })
-            })
         }
+
+        // save Check and push check._id to CheckConfig
+        check.save( function( err )
+        {
+            if ( err ) console.log( err )
+
+            config.checks.push( check )
+
+            config.save( function( err )
+            {
+                console.log( 'SAVE check in: '+ config._id )
+                req.io.sockets.emit( 'check response', config );
+            })
+        })
         
     })
 }
