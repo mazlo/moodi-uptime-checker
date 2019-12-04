@@ -115,7 +115,7 @@ route.post( '/:cid', function( req, res )
                 {
                     intervalsHelper.handleRecurrentCheckConfiguration( req, config )
                     
-                    res.redirect( '/configuration/'+ req.params['cid'] )
+                    res.redirect( '/configurations/'+ req.params['cid'] )
                 })
             })
 })
