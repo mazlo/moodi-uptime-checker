@@ -18,6 +18,7 @@ var intervalsHelper = require( './helpers/intervalsHelper' );
 
 // routes
 var index = require('./routes/index');
+var desk = require('./routes/desk');
 var users = require('./routes/users');
 var checks = require( './routes/checks' );
 
@@ -91,6 +92,7 @@ mongoose.connection.once( 'open', function()
 
 // Routes setup
 app.use( '/', index );
+app.use( '/desk', desk );
 app.use( '/users', users );
 app.use( '/uptime-checks', checks );
 

@@ -7,28 +7,6 @@ var mongoose = require('mongoose'),
     Check = mongoose.model( 'Check' ),
     ObjectId = mongoose.Types.ObjectId
 
-/* GET /uptime-checks/ */
-/* Show all CheckConfig */
-route.get( '/', function(req, res) 
-{   
-    //retrieve all from Monogo
-    CheckConfig.find( {}, null, { sort: 'group_name' }, function ( err, configs ) 
-    {
-        if (err) return console.error(err);
-
-        //respond to both HTML and JSON. JSON responses require 'Accept: application/json;' in the Request Header
-        res.format({
-            html: function()
-            {
-                res.render( 'uptime-checks.html', { configs: configs })
-            },
-            json: function()
-            {
-                res.json( configs );
-            }
-        })
-    })
-});
 
 /* POST /uptime-checks */
 /* Create a new CheckConfig */
