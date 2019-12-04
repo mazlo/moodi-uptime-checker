@@ -16,7 +16,7 @@
     </ul>
 
     <div id='basic-config' class='tab-content active'>
-        <form action='/uptime-checks/{{ config._id }}' method='POST' autocomplete='off'>
+        <form action='/configurations/{{ config._id }}' method='POST' autocomplete='off'>
             <div class='w3-row w3-padding-hor-4'>
                 <div class='w3-col l3'>Status:</div>
                 <div class='w3-col l4'>
@@ -51,7 +51,7 @@
     </div>
 
     <div id='assumptions' class='tab-content hidden'>
-        <form action='/uptime-checks/{{ config._id }}' method='POST' autocomplete='off'>
+        <form action='/configurations/{{ config._id }}' method='POST' autocomplete='off'>
         
         <@ if config.assumptions.length == 0 @>
             <p>No assumptions so far. Create your first assumption with the form below.</p>

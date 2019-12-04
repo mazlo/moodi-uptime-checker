@@ -8,8 +8,8 @@ var mongoose = require('mongoose'),
     ObjectId = mongoose.Types.ObjectId
 
 
-/* POST /uptime-checks */
-/* Create a new CheckConfig */
+/* POST /configuration */
+/* Create a new configuration */
 route.post( '/', function( req, res )
 {
     var config = new CheckConfig( req.body )
@@ -23,19 +23,19 @@ route.post( '/', function( req, res )
 
         intervalsHelper.handleRecurrentCheckConfiguration( req, config )
 
-        res.redirect( '/uptime-checks/'+ config._id )
+        res.redirect( '/configuration/'+ config._id )
     })
 })
 
-/* GET /uptime-checks/create */
-/* Show form to create new CheckConfig */
+/* GET /configuration/create */
+/* Show form to create new configuration */
 route.get( '/create', function( req, res )
 {
     res.render( 'uptime-check-create.html' )
 })
 
-/* GET /uptime-checks/:id */
-/* Show details for CheckConfig with given :id */
+/* GET /configuration/:id */
+/* Show details for configuration with given :id */
 route.get( '/:cid', function( req, res )
 {
     CheckConfig
@@ -59,8 +59,8 @@ route.get( '/:cid', function( req, res )
         })
 })
 
-/* GET /uptime-checks/:id/once */
-/* Invokes CheckConfig only once */
+/* GET /configuration/:id/once */
+/* Invokes configuration only once */
 route.get( '/:cid/once', function( req, res )
 {
     CheckConfig
@@ -76,8 +76,8 @@ route.get( '/:cid/once', function( req, res )
         })
 })
 
-/* POST /uptime-checks/:id */
-/* Update one CheckConfig with given :id VIA FORM */
+/* POST /configuration/:id */
+/* Update one configuration with given :id VIA FORM */
 route.post( '/:cid', function( req, res )
 {
     // this is passed to mongoose update method
@@ -115,13 +115,13 @@ route.post( '/:cid', function( req, res )
                 {
                     intervalsHelper.handleRecurrentCheckConfiguration( req, config )
                     
-                    res.redirect( '/uptime-checks/'+ req.params['cid'] )
+                    res.redirect( '/configuration/'+ req.params['cid'] )
                 })
             })
 })
 
-/* PUT /uptime-checks/:id */
-/* Update one CheckConfig with given :id VIA AJAX */
+/* PUT /configuration/:id */
+/* Update one configuration with given :id VIA AJAX */
 route.put( '/:cid', function( req, res )
 {
     CheckConfig
@@ -151,8 +151,8 @@ route.put( '/:cid', function( req, res )
         )
 })
 
-/* GET /uptime-checks/:id/assumptions */
-/* Returns details about the executed Assumptions of a CheckConfig */
+/* GET /configuration/:id/assumptions */
+/* Returns details about the executed Assumptions of a configuration */
 route.get( '/:cid/assumptions', function( req, res )
 {
     CheckConfig

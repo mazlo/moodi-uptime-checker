@@ -94,7 +94,7 @@ mongoose.connection.once( 'open', function()
 app.use( '/', index );
 app.use( '/desk', desk );
 app.use( '/users', users );
-app.use( '/uptime-checks', checks );
+app.use( '/configurations', checks );
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
