@@ -23,7 +23,7 @@ route.post( '/', function( req, res )
 
         intervalsHelper.handleRecurrentCheckConfiguration( req, config )
 
-        res.redirect( '/configuration/'+ config._id )
+        res.redirect( '/configurations/'+ config._id )
     })
 })
 
