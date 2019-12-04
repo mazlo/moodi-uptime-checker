@@ -1,0 +1,10 @@
+module.exports = {
+    development : {
+        PORT: 3000,
+        MONGODB_URI: 'mongodb://localhost:27017/uptime-checker',
+    },
+    production : {
+        PORT: 3000,
+        MONGODB_URI: 'mongodb://mongo:27017/moodi-db',
+    }
+}

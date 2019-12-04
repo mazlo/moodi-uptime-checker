@@ -7,6 +7,9 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+var env     = process.env.NODE_ENV || 'development'
+var config  = require( './config.js' )[env];
+
 var mongoose = require( 'mongoose' );
 var nunjucks = require( 'nunjucks' );
 var dateFilter = require( 'nunjucks-date-filter' );
@@ -23,7 +26,7 @@ var users = require('./routes/users');
 var checks = require( './routes/checks' );
 
 var app = express();
-var io = require( 'socket.io' ).listen( app.listen( 3000 ) )
+var io = require( 'socket.io' ).listen( app.listen( config.PORT ) )
 
 // view engine setup
 // Nunjucks setup
