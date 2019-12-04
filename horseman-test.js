@@ -1,4 +1,10 @@
 var Horseman = require('node-horseman');
+var chai = require('chai')
+  , chaiColors = require('chai-colors');
+
+chai.use(chaiColors);
+
+var expect = chai.expect
 var horseman = new Horseman();
 
 horseman
@@ -8,6 +14,7 @@ horseman
   .count('div#uc-config-assumption-details div > div')
   .then( function( divs )
   {
-    console.log( divs )
+    var answer = 10;
+    expect(answer).to.equal(3);
   })
   .close();
