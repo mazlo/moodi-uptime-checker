@@ -16,8 +16,7 @@ a:visited {
     text-decoration: none
 }
 
-button,
-input {
+button, input, select {
     outline: none;
     border: none;
     border-radius: 2px;
@@ -28,13 +27,14 @@ input {
     font-family: inherit;
     cursor: pointer;
 }
-input.uc-textfield {
+input.uc-textfield, select.uc-select {
     border: 1px solid #ccc;
     background-color: transparent;
     width: 380px;
     padding: 5px 8px;
     cursor: text;
 }
+select.uc-select { height: 28px; cursor: pointer; }
 
 h2 {
     margin: 28px 0 8px 0;
