@@ -65,7 +65,13 @@
                     <label class='w3-col l3' for='assumptions[{{ loop.index0 }}][label]'>Label:</label><div class='w3-col l4'><input class='uc-textfield w3-border-orange' name='assumptions[{{ loop.index0 }}][label]' value='{{ assump.label }}'></div>
                 </div>
                 <div class='w3-row w3-padding-hor-4'>
-                    <label class='w3-col l3' for='assumptions[{{ loop.index0 }}][type]'>Type:</label><div class='w3-col l4'><input class='uc-textfield' name='assumptions[{{ loop.index0 }}][type]' value='jQuery Selector' disabled='disabled'></div>
+                    <label class='w3-col l3' for='assumptions[{{ loop.index0 }}][type]'>Type:</label>
+                    <div class='w3-col l4'>
+                        <select class='uc-select' name='assumptions[{{ loop.index0 }}][type]'>
+                            <option value='jquery' <@ if assump.type == 'jquery' @>selected<@ endif @>>jQuery Selector</option>
+                            <option value='horseman' <@ if assump.type == 'horseman' @>selected<@ endif @>>Horseman Specification</option>
+                        </select>
+                    </div>
                 </div>
                 <div class='w3-row w3-padding-hor-4'>
                     <label class='w3-col l3' for='assumptions[{{ loop.index0 }}][value]'>Value:</label><div class='w3-col l4'><input class='uc-textfield uc-code' name='assumptions[{{ loop.index0 }}][value]' value='{{ assump.value }}'></div>
