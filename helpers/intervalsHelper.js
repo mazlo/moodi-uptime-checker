@@ -2,11 +2,15 @@ var mongoose = require('mongoose'),
     request = require( 'request' ),
     io = require( 'socket.io' ),
     cheerio = require( 'cheerio' ),
+    Horseman = require('node-horseman');
 
     CheckConfig = mongoose.model( 'CheckConfig' ),
     Check = mongoose.model( 'Check' ),
     AssumptionExecuted = mongoose.model( 'AssumptionExecuted' ),
     ObjectId = mongoose.Types.ObjectId;
+
+// load the parsinging models
+var horseman = new Horseman();
 
 /* */
 exports.intervalsMap = {};
@@ -82,15 +86,21 @@ exports.doTask = function( req, config )
             // associate with the calling CheckConfig
             check._checkconfig = ObjectId( config._id )
 
-            // load the parsing model
-            $ = cheerio.load(body)
-
             check.markModified( 'assumptions' )
 
             // prove each assumption and save it in the Check
             for( let obj of config.assumptions )
             {
-                var value_returned = eval(obj.value)
+                var value_returned = undefined
+                
+                if ( obj.type == 'jquery' )
+                    // load the parsing model
+                    $ = cheerio.load(body)
+
+                else if ( obj.type == 'horseman' )
+                    obj.value = 'horseman.open("'+ config.url +'").' + obj.value + '.close()'
+
+                value_returned = eval(obj.value)
 
                 var assumption = Object.assign( new AssumptionExecuted(), obj )
                 assumption._id = ObjectId()
