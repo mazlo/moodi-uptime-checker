@@ -20,7 +20,6 @@ var checkSchema = new Schema({
 })
 
 var checkConfigSchema = new Schema({
-    _id: Schema.Types.ObjectId,
     active: { type: Boolean, default: false },
     group_name: String,
     name: String,
