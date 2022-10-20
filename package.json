@@ -12,7 +12,7 @@
     "debug": "~2.2.0",
     "express": "^4.17.1",
     "mkdirp": "^0.5.1",
-    "mongoose": "^4.7.6",
+    "mongoose": "^4.13.21",
     "morgan": "^1.9.1",
     "nunjucks": "^3.2.0",
     "nunjucks-date-filter": "^0.1.1",
